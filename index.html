@@ -499,7 +499,7 @@ const CD={
  858:{n:"Uruguay",s:78,w:92,e:82},862:{n:"Venezuela",s:28,w:72,e:68},
  887:{n:"Yemen",s:5,w:25,e:30},894:{n:"Zambia",s:52,w:48,e:52}
 };
-<br>
+
 function total(d){return Math.round(d.s*0.4+d.w*0.3+d.e*0.3)}
 function getVal(d,dim){return dim==='total'?total(d):d[dim]}
 function colorFor(v){
@@ -518,9 +518,9 @@ const NOTES={
  w:"Water score: WHO/UNICEF JMP 2024 — share of population with safely managed drinking water services.",
  e:"Education score: UNDP Human Development Index 2022 Education Index converted to 0–100 scale."
 };
-<br>
+
 let curDim='total';
-<br>
+
 function setMapTab(dim,btn){
  curDim=dim;
  document.querySelectorAll('.map-tab').forEach(t=>t.classList.remove('active'));
@@ -530,7 +530,7 @@ function setMapTab(dim,btn){
  if(window._mapReady)renderMapColors();
  renderMapMetrics();
 }
-<br>
+
 function renderMapColors(){
  const isDark=matchMedia('(prefers-color-scheme: dark)').matches;
  const unk=isDark?"#2a2a2a":"#d5d5d5";
@@ -539,7 +539,7 @@ function renderMapColors(){
  p.setAttribute('fill',d?colorFor(getVal(d,curDim)):unk);
  });
 }
-<br>
+
 function renderMapMetrics(){
  const vals=Object.values(CD).map(d=>getVal(d,curDim));
  const n=vals.length;
@@ -554,7 +554,7 @@ function renderMapMetrics(){
  mc("Score < 35",lo+" countries","Critical level");
 }
 function mc(l,v,s){return`<div class="mc"><div class="mc-label">${l}</div><div class="mc-val">${v}</div><div class="mc-sub">${s}</div></div>`}
-<br>
+
 // share & copy
 function shareTwitter(){
  const txt=encodeURIComponent("Security. Water. Education.\n\nThree foundations. One framework for human progress.\n\nExplore the global map → https://three-principles.org\n\n#GlobalDevelopment #SDGs #WaterAccess #Education");
@@ -567,7 +567,7 @@ function copyURL(btn){
  setTimeout(()=>btn.textContent=orig,2000);
  });
 }
-<br>
+
 // smooth scroll for nav links
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
  a.addEventListener('click',e=>{
@@ -575,7 +575,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
  document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
  });
 });
-<br>
+
 window.addEventListener('load',()=>{
  renderMapMetrics();
  document.getElementById('map-note').textContent=NOTES['total'];
