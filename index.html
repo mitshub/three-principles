@@ -1,607 +1,639 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Three Principles — Security · Water · Education</title>
-<meta name="description" content="A framework for solving humanity's greatest challenges — population growth, displacement, climate change, and inequality — by guaranteeing three foundations for every person on earth.">
-<meta name="robots" content="index, follow">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://three-principles.org/">
-<meta property="og:title" content="Three Principles — Security · Water · Education">
-<meta property="og:description" content="Solving humanity's greatest challenges starts with three foundations: Security, Water, and Education. See where the world stands — and what changes when every person has all three.">
-<meta property="og:image" content="https://three-principles.org/og-image.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Three Principles — Security · Water · Education">
-<meta name="twitter:description" content="Solving humanity's greatest challenges starts with three foundations. See the global map and what a green world looks like.">
-<meta name="twitter:image" content="https://three-principles.org/og-image.png">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231D9E75'/><text y='24' x='4' font-size='22'>3</text></svg>">
-<link rel="canonical" href="https://three-principles.org/">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" defer></script>
-<style>
-:root{
-  --bg:#fafaf8;--bg2:#f2f0eb;--bg3:#e8e6e0;
-  --text:#1a1a18;--text2:#5a5a56;--text3:#8a8a84;
-  --border:rgba(0,0,0,0.1);
-  --green:#1D9E75;--green-light:#E1F5EE;
-  --purple:#534AB7;--purple-light:#EEEDFE;
-  --blue:#185FA5;--blue-light:#E6F1FB;
-  --amber:#854F0B;--amber-light:#FAEEDA;
-  --red-light:#FCEBEB;--red-dark:#791F1F;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
-
-nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:0.5px solid var(--border);padding:0 2rem}
-.nav-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
-.nav-logo{font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--text)}
-.nav-links{display:flex;gap:1.5rem}
-.nav-links a{font-size:13px;color:var(--text2);text-decoration:none;transition:color .15s}
-.nav-links a:hover{color:var(--text)}
-
-section{padding:5rem 2rem}
-.inner{max-width:860px;margin:0 auto}
-
-#hero{background:var(--bg);padding:7rem 2rem 5rem}
-.hero-kicker{font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:1.25rem}
-.hero-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;line-height:1.2;margin-bottom:1.5rem;letter-spacing:-.02em}
-.hero-title span{color:var(--green)}
-.hero-lead{font-size:1.1rem;color:var(--text2);max-width:580px;line-height:1.8;margin-bottom:2rem}
-.hero-badges{display:flex;gap:.75rem;flex-wrap:wrap}
-.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;border:0.5px solid}
-.badge-s{background:var(--purple-light);color:var(--purple);border-color:var(--purple)}
-.badge-w{background:var(--blue-light);color:var(--blue);border-color:var(--blue)}
-.badge-e{background:var(--amber-light);color:var(--amber);border-color:var(--amber)}
-
-.sec-label{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--green);text-transform:uppercase;margin-bottom:.75rem}
-.sec-title{font-size:1.6rem;font-weight:700;letter-spacing:-.01em;margin-bottom:.75rem}
-.sec-lead{color:var(--text2);max-width:620px;line-height:1.8;margin-bottom:2.5rem}
-
-#why{background:var(--bg2)}
-.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-bottom:2.5rem}
-.why-card{background:var(--bg);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem}
-.why-card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:18px}
-.why-card h3{font-size:15px;font-weight:600;margin-bottom:.5rem}
-.why-card p{font-size:14px;color:var(--text2);line-height:1.7}
-
-.svg-wrap{background:var(--bg2);border-radius:16px;overflow:hidden;padding:1rem}
-.pull-quote{border-left:3px solid var(--green);padding:.75rem 1.25rem;margin:2rem 0;background:var(--green-light);border-radius:0 8px 8px 0}
-.pull-quote p{font-size:1rem;font-style:italic;color:#085041;line-height:1.7}
-
-#beforeafter{background:var(--bg2)}
-.ba-grid{display:grid;grid-template-columns:1fr 36px 1fr;gap:0;align-items:start}
-.ba-col-head{font-size:13px;font-weight:600;padding:7px 12px;border-radius:8px;text-align:center;margin-bottom:10px}
-.before-head{background:var(--red-light);color:var(--red-dark)}
-.after-head{background:var(--green-light);color:#085041}
-.ba-card{border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6}
-.ba-before{background:var(--red-light);border:0.5px solid #F09595;margin-bottom:8px}
-.ba-after{background:var(--green-light);border:0.5px solid #5DCAA5;margin-bottom:8px}
-.ba-before b{color:var(--red-dark);font-weight:600}
-.ba-after b{color:#085041;font-weight:600}
-.ba-arrow{display:flex;align-items:flex-start;justify-content:center;padding-top:38px;color:var(--text3);font-size:20px}
-.ba-section-label{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:1.25rem 0 .5rem}
-.chip{display:inline-block;background:var(--green-light);color:#085041;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;margin-left:4px}
-.ba-footer{margin-top:1.5rem;padding:1rem 1.25rem;background:var(--bg);border-radius:10px;font-size:13px;color:var(--text2);text-align:center;line-height:1.7;border:0.5px solid var(--border)}
-
-#map-section{background:var(--bg)}
-.map-tabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
-.map-tab{padding:6px 16px;border:0.5px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;background:var(--bg);color:var(--text2);transition:all .15s}
-.map-tab.active{background:var(--text);color:var(--bg);border-color:var(--text)}
-.map-container{position:relative;width:100%;background:var(--bg2);border-radius:16px;overflow:hidden;margin-bottom:.75rem}
-#world-svg{width:100%;display:block}
-.map-tooltip{position:absolute;background:var(--bg);border:0.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;pointer-events:none;display:none;z-index:10;min-width:150px}
-.tt-name{font-weight:600;font-size:13px;margin-bottom:4px}
-.tt-row{display:flex;justify-content:space-between;gap:12px;color:var(--text2);margin-bottom:2px}
-.tt-val{color:var(--text);font-weight:600}
-.map-legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);margin-bottom:1.25rem;flex-wrap:wrap}
-.leg-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;min-width:140px;max-width:220px}
-.leg-seg{flex:1}
-.metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:.75rem}
-.mc{background:var(--bg2);border-radius:10px;padding:.75rem 1rem}
-.mc-label{font-size:11px;color:var(--text2);margin-bottom:3px}
-.mc-val{font-size:20px;font-weight:700;color:var(--text)}
-.mc-sub{font-size:11px;color:var(--text3);margin-top:1px}
-.map-note{font-size:11px;color:var(--text3);line-height:1.6}
-
-#approach{background:var(--bg2)}
-.approach-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
-.ap-card{background:var(--bg);border-radius:12px;padding:1.25rem;border:0.5px solid var(--border)}
-.ap-num{font-size:11px;font-weight:700;color:var(--green);letter-spacing:.06em;margin-bottom:.5rem}
-.ap-card h4{font-size:14px;font-weight:600;margin-bottom:.4rem}
-.ap-card p{font-size:13px;color:var(--text2);line-height:1.65}
-
-#cta{background:var(--text);color:var(--bg);padding:5rem 2rem;text-align:center}
-#cta .sec-label{color:#5DCAA5}
-#cta .sec-title{color:var(--bg);font-size:2rem;margin-bottom:1rem}
-#cta p{color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 2rem;line-height:1.8}
-.cta-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
-.btn-primary{padding:10px 24px;background:#1D9E75;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
-.btn-secondary{padding:10px 24px;background:transparent;color:rgba(255,255,255,.8);border:0.5px solid rgba(255,255,255,.3);border-radius:8px;font-size:14px;cursor:pointer}
-
-footer{background:var(--bg);border-top:0.5px solid var(--border);padding:2rem;text-align:center}
-footer p{font-size:12px;color:var(--text3)}
-.divider{border:none;border-top:0.5px solid var(--border);margin:1.5rem 0}
-</style>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Description" content="A framework for solving humanity's greatest challenges — population growth, displacement, climate change, and inequality — by guaranteeing three foundations for every person on earth.">
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.3">
+  <style type="text/css">
+    body {background-color: #f9f9f6}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Helvetica Neue'; color: #141413; -webkit-text-stroke: #141413; background-color: #f9f9f6}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Helvetica Neue'; color: #141413; -webkit-text-stroke: #141413; background-color: #f9f9f6; min-height: 17.0px}
+    span.s1 {font-kerning: none}
+  </style>
 </head>
 <body>
-
-<nav>
-  <div class="nav-inner">
-    <span class="nav-logo">Three Principles Initiative</span>
-    <div class="nav-links">
-      <a href="#why">Problem</a>
-      <a href="#structure">Framework</a>
-      <a href="#beforeafter">Vision</a>
-      <a href="#map-section">Current State</a>
-      <a href="#cta">Take Action</a>
-    </div>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="inner">
-    <div class="hero-kicker">A Framework for Human Progress</div>
-    <h1 class="hero-title">Solving humanity's greatest challenges<br>starts with <span>three foundations.</span></h1>
-    <p class="hero-lead">Population growth, refugees, climate change, inequality — for decades, the world's response has been symptomatic. Real, lasting solutions begin with guaranteeing three things for every human being on earth.</p>
-    <div class="hero-badges">
-      <span class="badge badge-s">Security</span>
-      <span class="badge badge-w">Water</span>
-      <span class="badge badge-e">Education</span>
-    </div>
-  </div>
-</section>
-
-<!-- WHY -->
-<section id="why">
-  <div class="inner">
-    <div class="sec-label">Problem</div>
-    <h2 class="sec-title">Why conventional approaches fall short</h2>
-    <p class="sec-lead">When refugees appear, we build camps. When poverty deepens, we send aid. When ecosystems degrade, we impose regulations. These responses are necessary — but they treat symptoms while the structural causes remain untouched.</p>
-    <div class="why-grid">
-      <div class="why-card">
-        <div class="why-card-icon" style="background:#FCEBEB">⚠</div>
-        <h3>Treating symptoms</h3>
-        <p>Siloed, issue-by-issue responses leave root causes intact. Problems grow more complex instead of being resolved.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-card-icon" style="background:#FFF3CD">↩</div>
-        <h3>Aid dependency</h3>
-        <p>External assistance often undermines local capacity. Recipients are not empowered to solve their own challenges sustainably.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-card-icon" style="background:#E1F5EE">⟳</div>
-        <h3>Ignoring interdependence</h3>
-        <p>Security, water, and education are deeply interconnected. Improving one accelerates the other two — yet this multiplier effect goes unused.</p>
-      </div>
-    </div>
-    <div class="pull-quote">
-      <p>"The problem is not that we are doing too little.<br>It is that we are not starting in the right place."</p>
-    </div>
-  </div>
-</section>
-
-<!-- STRUCTURE -->
-<section id="structure">
-  <div class="inner">
-    <div class="sec-label">Framework</div>
-    <h2 class="sec-title">The Three Principles and why they work</h2>
-    <p class="sec-lead">The three principles are not independent targets — they form a self-reinforcing system. Improving one accelerates the other two, which in turn drives cascading progress on climate, gender equality, displacement, and inequality.</p>
-
-    <div class="svg-wrap" style="margin-bottom:2rem">
-      <svg width="100%" viewBox="0 0 680 540" role="img" aria-label="Structure diagram of the Three Principles">
-        <defs>
-          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </marker>
-        </defs>
-        <rect x="20" y="20" width="640" height="500" rx="16" fill="none" stroke="#B4B2A9" stroke-width="0.5" stroke-dasharray="6 3"/>
-        <text font-size="12" fill="#888780" x="38" y="42">Humanity's interconnected challenges</text>
-        <rect x="36" y="54" width="108" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
-        <text font-size="12" fill="#5F5E5A" x="90" y="76" text-anchor="middle">Climate change</text>
-        <rect x="536" y="54" width="108" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
-        <text font-size="12" fill="#5F5E5A" x="590" y="76" text-anchor="middle">Gender inequality</text>
-        <rect x="36" y="452" width="108" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
-        <text font-size="12" fill="#5F5E5A" x="90" y="474" text-anchor="middle">Displacement</text>
-        <rect x="536" y="452" width="108" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
-        <text font-size="12" fill="#5F5E5A" x="590" y="474" text-anchor="middle">Inequality</text>
-        <rect x="278" y="28" width="124" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
-        <text font-size="12" fill="#5F5E5A" x="340" y="50" text-anchor="middle">Population growth</text>
-        <rect x="120" y="100" width="440" height="340" rx="14" fill="none" stroke="#5DCAA5" stroke-width="0.5" stroke-dasharray="4 3"/>
-        <text font-size="12" fill="#0F6E56" x="138" y="120">The Three Principles</text>
-        <rect x="248" y="225" width="184" height="52" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
-        <text font-size="14" font-weight="500" fill="#085041" x="340" y="246" text-anchor="middle">Positive spiral</text>
-        <text font-size="12" fill="#0F6E56" x="340" y="264" text-anchor="middle">Mutual reinforcement</text>
-        <rect x="148" y="158" width="140" height="58" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
-        <text font-size="14" font-weight="500" fill="#3C3489" x="218" y="181" text-anchor="middle">Security</text>
-        <text font-size="12" fill="#534AB7" x="218" y="201" text-anchor="middle">Dismantling vested interests</text>
-        <rect x="270" y="360" width="140" height="58" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
-        <text font-size="14" font-weight="500" fill="#0C447C" x="340" y="383" text-anchor="middle">Water</text>
-        <text font-size="12" fill="#185FA5" x="340" y="403" text-anchor="middle">Foundation of life</text>
-        <rect x="392" y="158" width="140" height="58" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
-        <text font-size="14" font-weight="500" fill="#633806" x="462" y="181" text-anchor="middle">Education</text>
-        <text font-size="12" fill="#854F0B" x="462" y="201" text-anchor="middle">Transforming next generation</text>
-        <line x1="254" y1="207" x2="296" y2="238" stroke="#7F77DD" stroke-width="1" marker-end="url(#arr)"/>
-        <line x1="340" y1="360" x2="340" y2="279" stroke="#378ADD" stroke-width="1" marker-end="url(#arr)"/>
-        <line x1="426" y1="207" x2="384" y2="238" stroke="#EF9F27" stroke-width="1" marker-end="url(#arr)"/>
-        <path d="M288 185 Q250 270 308 358" fill="none" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-        <path d="M372 358 Q430 270 392 190" fill="none" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-        <line x1="288" y1="183" x2="392" y2="183" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-        <line x1="280" y1="240" x2="154" y2="88" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/>
-        <line x1="400" y1="240" x2="546" y2="88" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/>
-        <line x1="280" y1="258" x2="154" y2="452" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/>
-        <line x1="400" y1="258" x2="546" y2="452" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/>
-        <line x1="340" y1="225" x2="340" y2="62" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/>
-        <line x1="148" y1="518" x2="178" y2="518" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-        <text font-size="11" fill="#5F5E5A" x="184" y="522">Mutual reinforcement</text>
-        <line x1="360" y1="518" x2="390" y2="518" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/>
-        <text font-size="11" fill="#0F6E56" x="396" y="522">Cascading impact on challenges</text>
-      </svg>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem">
-      <div style="background:var(--bg2);border-radius:12px;padding:1.5rem;border-left:3px solid var(--purple)">
-        <div style="font-size:11px;font-weight:700;color:var(--purple);letter-spacing:.06em;margin-bottom:.5rem">SECURITY</div>
-        <h3 style="font-size:15px;font-weight:600;margin-bottom:.5rem">Security</h3>
-        <p style="font-size:13px;color:var(--text2);line-height:1.7">Every leader knows security matters. The real question is why it keeps failing. Conflicting vested interests, historical grievances, dysfunctional governance — these structural barriers demand a paradoxical approach: invest in water and education to build security from the ground up.</p>
-      </div>
-      <div style="background:var(--bg2);border-radius:12px;padding:1.5rem;border-left:3px solid var(--blue)">
-        <div style="font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.06em;margin-bottom:.5rem">WATER</div>
-        <h3 style="font-size:15px;font-weight:600;margin-bottom:.5rem">Water</h3>
-        <p style="font-size:13px;color:var(--text2);line-height:1.7">The most fundamental resource for life. When water access improves, child mortality falls, women reclaim time, agriculture stabilises, and a primary source of local conflict disappears. Of the three principles, water offers the fastest and most measurable returns.</p>
-      </div>
-      <div style="background:var(--bg2);border-radius:12px;padding:1.5rem;border-left:3px solid var(--amber)">
-        <div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.06em;margin-bottom:.5rem">EDUCATION</div>
-        <h3 style="font-size:15px;font-weight:600;margin-bottom:.5rem">Education</h3>
-        <p style="font-size:13px;color:var(--text2);line-height:1.7">Each additional year of female schooling reduces birth rates by roughly 10%. Nobel laureate James Heckman found that early education investment yields 7–10% annual social returns. Education builds the next generation of problem-solvers — and the surest long-term defence against extremism.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BEFORE / AFTER -->
-<section id="beforeafter">
-  <div class="inner">
-    <div class="sec-label">Vision</div>
-    <h2 class="sec-title">A world where the three principles are guaranteed</h2>
-    <p class="sec-lead">The changes below are not utopian projections — they follow directly from the evidence. And critically, they do not happen in isolation: each improvement triggers the next.</p>
-
-    <div style="display:grid;grid-template-columns:1fr 36px 1fr;margin-bottom:10px">
-      <div class="ba-col-head before-head">The world today</div>
-      <div></div>
-      <div class="ba-col-head after-head">When the three principles are guaranteed</div>
-    </div>
-
-    <div class="ba-section-label">Security</div>
-    <div class="ba-grid">
-      <div class="ba-card ba-before"><b>56 active conflicts</b> — the most since World War II. Over 110 million people are displaced. Power structures that profit from continued conflict remain firmly entrenched.</div>
-      <div class="ba-arrow">→</div>
-      <div class="ba-card ba-after">A <b>minimum level of predictability</b> allows people to plan ahead. Economic despair diminishes, removing the primary recruitment incentive for armed groups. Water and education investment becomes sustainable.</div>
-    </div>
-
-    <div class="ba-section-label">Water</div>
-    <div class="ba-grid">
-      <div class="ba-card ba-before"><b>2.2 billion people</b> lack safely managed drinking water. Over 800,000 children die annually from waterborne diseases. Women and girls spend hours each day collecting water.</div>
-      <div class="ba-arrow">→</div>
-      <div class="ba-card ba-after">Child mortality drops sharply. <b>Women reclaim time</b> — enabling schooling and economic participation. Agriculture stabilises. Local conflicts rooted in water scarcity dissolve.</div>
-    </div>
-
-    <div class="ba-section-label">Education</div>
-    <div class="ba-grid">
-      <div class="ba-card ba-before"><b>240 million children</b> are out of school globally, with girls and conflict zones most affected. Poverty and illiteracy reproduce themselves across generations.</div>
-      <div class="ba-arrow">→</div>
-      <div class="ba-card ba-after"><b>Critical thinking</b> builds resilience against extremist recruitment. Female education naturally reduces birth rates, easing population pressures without coercion.</div>
-    </div>
-
-    <div class="ba-section-label">Secondary benefits</div>
-    <div class="ba-grid" style="margin-bottom:8px">
-      <div class="ba-card ba-before"><b>Climate:</b> Survival pressures drive deforestation and land overuse. Communities with no safety net cannot afford long-term thinking.</div>
-      <div class="ba-arrow">→</div>
-      <div class="ba-card ba-after">When survival is no longer at stake, <b>long-term thinking</b> becomes possible. Environmental literacy spreads through education systems.<span class="chip">Deforestation -40%</span></div>
-    </div>
-    <div class="ba-grid" style="margin-bottom:8px">
-      <div class="ba-card ba-before"><b>Gender equality:</b> Women bear the heaviest burden of conflict, water scarcity, and lack of schooling. Decision-making power remains out of reach.</div>
-      <div class="ba-arrow">→</div>
-      <div class="ba-card ba-after">Water access → time freed → schooling → economic participation: a <b>natural chain reaction</b>, not a forced agenda.<span class="chip">Gender gap -55%</span></div>
-    </div>
-    <div class="ba-grid" style="margin-bottom:8px">
-      <div class="ba-card ba-before"><b>Displacement:</b> Conflict, water scarcity, and economic despair force migration. Arrival in host countries generates new tensions.</div>
-      <div class="ba-arrow">→</div>
-      <div class="ba-card ba-after">Migration becomes a <b>choice rather than a necessity</b>. People have reasons to stay — safety, water, opportunity — dismantling the structural drivers of refugee crises.<span class="chip">Forced displacement -60%</span></div>
-    </div>
-    <div class="ba-grid">
-      <div class="ba-card ba-before"><b>Economic inequality:</b> Aid dependency and entrenched poverty lock out enormous latent markets and workforces.</div>
-      <div class="ba-arrow">→</div>
-      <div class="ba-card ba-after">"Aid recipients" become <b>consumers and producers</b>. Africa's population, projected at 2.5 billion by 2050, emerges as a new engine of the global economy.<span class="chip">New market +5 billion</span></div>
-    </div>
-
-    <div class="ba-footer">The three principles are not independent targets — <strong>achieving one accelerates the other two.</strong><br>This self-reinforcing dynamic is what fundamentally distinguishes this framework from conventional siloed approaches.</div>
-  </div>
-</section>
-
-<!-- MAP -->
-<section id="map-section">
-  <div class="inner">
-    <div class="sec-label">Current State</div>
-    <h2 class="sec-title">Where the world stands today</h2>
-    <p class="sec-lead">Country scores are derived from the Global Peace Index, WHO/UNICEF Joint Monitoring Programme, and the UNDP Education Index. Toggle between the composite score and each individual dimension.</p>
-
-    <div class="map-tabs">
-      <button class="map-tab active" onclick="setMapTab('total',this)">Composite score</button>
-      <button class="map-tab" onclick="setMapTab('s',this)">Security</button>
-      <button class="map-tab" onclick="setMapTab('w',this)">Water</button>
-      <button class="map-tab" onclick="setMapTab('e',this)">Education</button>
-    </div>
-
-    <div class="map-container">
-      <svg id="world-svg" viewBox="0 0 900 440" role="img" aria-label="World map of Three Principles scores">
-        <g id="world-g"></g>
-      </svg>
-      <div class="map-tooltip" id="map-tt">
-        <div class="tt-name" id="mt-n"></div>
-        <div class="tt-row"><span id="mt-dim"></span><span class="tt-val" id="mt-v"></span></div>
-        <div class="tt-row" id="mt-total-row"><span>Composite</span><span class="tt-val" id="mt-t"></span></div>
-      </div>
-    </div>
-
-    <div class="map-legend">
-      <span>Low</span>
-      <div class="leg-bar">
-        <div class="leg-seg" style="background:#c0392b"></div>
-        <div class="leg-seg" style="background:#e67e22"></div>
-        <div class="leg-seg" style="background:#f1c40f"></div>
-        <div class="leg-seg" style="background:#2ecc71"></div>
-        <div class="leg-seg" style="background:#27ae60"></div>
-      </div>
-      <span>High</span>
-      <span id="map-leg-label" style="margin-left:8px;font-weight:600">Composite score</span>
-    </div>
-
-    <div class="metrics-row" id="map-metrics"></div>
-    <p class="map-note" id="map-note"></p>
-  </div>
-</section>
-
-<!-- IMAGINE -->
-<section id="imagine" style="background:var(--text);padding:5rem 2rem;text-align:center">
-  <div class="inner">
-    <div class="sec-label" style="color:#5DCAA5">Imagine</div>
-    <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1.3;margin-bottom:1.5rem">
-      What if that map<br>turned green?
-    </h2>
-    <p style="color:rgba(255,255,255,.65);max-width:560px;margin:0 auto 2.5rem;line-height:1.85;font-size:1.05rem">
-      Not through a single treaty, a technological breakthrough, or a wave of foreign aid —
-      but through the quiet, compounding effect of every child who goes to school,
-      every village that gains access to clean water,
-      every community that no longer has to flee.
-    </p>
-    <p style="color:rgba(255,255,255,.5);max-width:480px;margin:0 auto;line-height:1.85;font-size:.95rem">
-      The map does not need to turn green all at once.<br>
-      It only needs to start.
-    </p>
-    <div style="margin-top:3rem;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap">
-      <div style="text-align:center">
-        <div style="font-size:2rem;font-weight:700;color:#2ecc71">+1 yr</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:4px">of schooling for girls<br>= birth rate −10%</div>
-      </div>
-      <div style="width:0.5px;background:rgba(255,255,255,.15);height:56px;align-self:center"></div>
-      <div style="text-align:center">
-        <div style="font-size:2rem;font-weight:700;color:#2ecc71">$1</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:4px">invested in water &amp; sanitation<br>= $4 economic return</div>
-      </div>
-      <div style="width:0.5px;background:rgba(255,255,255,.15);height:56px;align-self:center"></div>
-      <div style="text-align:center">
-        <div style="font-size:2rem;font-weight:700;color:#2ecc71">163</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:4px">countries mapped.<br>Every one can improve.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- APPROACH -->
-<section id="approach">
-  <div class="inner">
-    <div class="sec-label">Action</div>
-    <h2 class="sec-title">Who needs to act, and how</h2>
-    <p class="sec-lead">Investment in the three principles protects human dignity and lays the foundation for sustainable economic growth. Humanitarian values and economic interest are not in conflict — they reinforce each other.</p>
-    <div class="approach-grid">
-      <div class="ap-card">
-        <div class="ap-num">POLICY MAKERS</div>
-        <h4>For policymakers</h4>
-        <p>Evaluate every policy through one lens: does it strengthen the three principles? Investment here is the most cost-effective way to prevent the far greater future costs of refugee crises, conflict, and pandemic.</p>
-      </div>
-      <div class="ap-card">
-        <div class="ap-num">BUSINESS &amp; INVESTORS</div>
-        <h4>For business and investors</h4>
-        <p>Every dollar invested in water and sanitation generates four dollars in economic return. Today's "aid recipient" regions are tomorrow's growth markets. Three-principles scores are a leading indicator of business risk.</p>
-      </div>
-      <div class="ap-card">
-        <div class="ap-num">CITIZENS &amp; ACTIVISTS</div>
-        <h4>For citizens and activists</h4>
-        <p>Demand that public funds and charitable giving go beyond symptomatic relief to structural solutions. Hold governments and institutions accountable to this common foundation.</p>
-      </div>
-      <div class="ap-card">
-        <div class="ap-num">INTERNATIONAL ORGS</div>
-        <h4>For international organisations</h4>
-        <p>Move beyond siloed programmes. Link water projects to education outcomes; connect education initiatives to security conditions. Coordinated investment unlocks the multiplier effect this framework is built on.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section id="cta">
-  <div class="inner">
-    <div class="sec-label">Join Us</div>
-    <h2 class="sec-title">Start in the right place.</h2>
-    <p>Humanity's challenges are not unsolvable. Without security, water, and education, there is no sustainable future — and no thriving global economy. The question is not whether we can afford to act. It is whether we can afford not to.</p>
-    <div class="cta-btns">
-      <button class="btn-primary">Share this report</button>
-      <button class="btn-secondary">Read the full framework</button>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p>Data sources: Global Peace Index 2025 (Institute for Economics &amp; Peace) · WHO/UNICEF Joint Monitoring Programme 2024 · UNDP Human Development Index 2022<br>
-  Scores are estimates derived by normalising each index to 0–100 and applying a weighted average: Security 40% · Water 30% · Education 30%.</p>
-</footer>
-
-<script>
-const CD={
-  4:{n:"Afghanistan",s:2,w:22,e:18},8:{n:"Albania",s:65,w:82,e:76},
-  12:{n:"Algeria",s:52,w:79,e:64},24:{n:"Angola",s:42,w:41,e:38},
-  32:{n:"Argentina",s:58,w:91,e:78},36:{n:"Australia",s:87,w:99,e:95},
-  40:{n:"Austria",s:91,w:99,e:93},50:{n:"Bangladesh",s:45,w:58,e:48},
-  56:{n:"Belgium",s:84,w:99,e:92},64:{n:"Bhutan",s:70,w:72,e:62},
-  68:{n:"Bolivia",s:55,w:68,e:66},76:{n:"Brazil",s:48,w:87,e:72},
-  104:{n:"Myanmar",s:18,w:48,e:42},116:{n:"Cambodia",s:52,w:61,e:53},
-  120:{n:"Cameroon",s:38,w:42,e:43},124:{n:"Canada",s:88,w:99,e:94},
-  140:{n:"Central African Rep.",s:8,w:15,e:12},144:{n:"Sri Lanka",s:55,w:80,e:71},
-  152:{n:"Chile",s:72,w:91,e:83},156:{n:"China",s:62,w:86,e:74},
-  170:{n:"Colombia",s:48,w:88,e:72},180:{n:"DR Congo",s:10,w:21,e:18},
-  188:{n:"Costa Rica",s:74,w:92,e:80},192:{n:"Cuba",s:68,w:92,e:86},
-  218:{n:"Ecuador",s:44,w:86,e:74},818:{n:"Egypt",s:48,w:82,e:61},
-  231:{n:"Ethiopia",s:32,w:28,e:35},246:{n:"Finland",s:92,w:99,e:94},
-  250:{n:"France",s:82,w:99,e:91},276:{n:"Germany",s:88,w:99,e:94},
-  288:{n:"Ghana",s:58,w:58,e:58},300:{n:"Greece",s:72,w:99,e:86},
-  320:{n:"Guatemala",s:38,w:78,e:60},324:{n:"Guinea",s:32,w:28,e:22},
-  340:{n:"Honduras",s:35,w:79,e:60},356:{n:"India",s:52,w:68,e:58},
-  360:{n:"Indonesia",s:58,w:72,e:62},364:{n:"Iran",s:42,w:88,e:68},
-  368:{n:"Iraq",s:28,w:72,e:48},372:{n:"Ireland",s:92,w:99,e:94},
-  376:{n:"Israel",s:38,w:99,e:90},380:{n:"Italy",s:80,w:99,e:89},
-  392:{n:"Japan",s:88,w:99,e:93},400:{n:"Jordan",s:55,w:88,e:72},
-  404:{n:"Kenya",s:42,w:42,e:52},408:{n:"North Korea",s:15,w:72,e:68},
-  410:{n:"South Korea",s:82,w:99,e:93},418:{n:"Laos",s:58,w:58,e:50},
-  422:{n:"Lebanon",s:32,w:62,e:72},430:{n:"Liberia",s:38,w:28,e:30},
-  434:{n:"Libya",s:22,w:58,e:52},450:{n:"Madagascar",s:48,w:22,e:32},
-  454:{n:"Malawi",s:52,w:48,e:42},458:{n:"Malaysia",s:70,w:92,e:78},
-  484:{n:"Mexico",s:42,w:92,e:74},496:{n:"Mongolia",s:68,w:72,e:68},
-  504:{n:"Morocco",s:58,w:78,e:58},508:{n:"Mozambique",s:35,w:28,e:28},
-  516:{n:"Namibia",s:62,w:72,e:68},524:{n:"Nepal",s:55,w:62,e:52},
-  528:{n:"Netherlands",s:88,w:99,e:93},554:{n:"New Zealand",s:90,w:99,e:95},
-  566:{n:"Nigeria",s:28,w:38,e:38},578:{n:"Norway",s:92,w:99,e:95},
-  586:{n:"Pakistan",s:32,w:52,e:38},604:{n:"Peru",s:52,w:82,e:72},
-  608:{n:"Philippines",s:48,w:72,e:68},616:{n:"Poland",s:72,w:99,e:88},
-  620:{n:"Portugal",s:88,w:99,e:88},642:{n:"Romania",s:68,w:82,e:80},
-  643:{n:"Russia",s:18,w:88,e:82},646:{n:"Rwanda",s:58,w:52,e:55},
-  682:{n:"Saudi Arabia",s:52,w:92,e:72},686:{n:"Senegal",s:52,w:42,e:42},
-  694:{n:"Sierra Leone",s:42,w:28,e:30},706:{n:"Somalia",s:5,w:15,e:10},
-  710:{n:"South Africa",s:48,w:72,e:72},716:{n:"Zimbabwe",s:38,w:52,e:52},
-  724:{n:"Spain",s:84,w:99,e:91},729:{n:"Sudan",s:12,w:38,e:32},
-  752:{n:"Sweden",s:90,w:99,e:94},756:{n:"Switzerland",s:90,w:99,e:94},
-  760:{n:"Syria",s:8,w:38,e:38},764:{n:"Thailand",s:62,w:88,e:72},
-  788:{n:"Tunisia",s:58,w:82,e:70},792:{n:"Turkey",s:48,w:88,e:74},
-  800:{n:"Uganda",s:40,w:42,e:42},804:{n:"Ukraine",s:15,w:88,e:84},
-  826:{n:"United Kingdom",s:84,w:99,e:93},840:{n:"United States",s:72,w:99,e:92},
-  858:{n:"Uruguay",s:78,w:92,e:82},862:{n:"Venezuela",s:28,w:72,e:68},
-  887:{n:"Yemen",s:5,w:25,e:30},894:{n:"Zambia",s:52,w:48,e:52}
-};
-
-function total(d){return Math.round(d.s*0.4+d.w*0.3+d.e*0.3)}
-function getVal(d,dim){return dim==='total'?total(d):d[dim]}
-function colorFor(v){
-  if(v>=80)return"#27ae60";if(v>=65)return"#2ecc71";
-  if(v>=50)return"#f1c40f";if(v>=35)return"#e67e22";return"#c0392b";
-}
-const DIMS={
-  total:{label:"Composite score (Security 40% · Water 30% · Education 30%)",dl:"Composite"},
-  s:{label:"Security score",dl:"Security"},
-  w:{label:"Water access score",dl:"Water"},
-  e:{label:"Education score",dl:"Education"}
-};
-const NOTES={
-  total:"Composite = Security ×40% + Water ×30% + Education ×30%. Sources: Global Peace Index 2025 · WHO/UNICEF JMP 2024 · UNDP Education Index 2022.",
-  s:"Security score: Global Peace Index 2025, inverted and normalised (1.0 = most peaceful → 100, 5.0 = least peaceful → 0).",
-  w:"Water score: WHO/UNICEF JMP 2024 — share of population with safely managed drinking water services.",
-  e:"Education score: UNDP Human Development Index 2022 Education Index converted to 0–100 scale."
-};
-
-let curDim='total';
-
-function setMapTab(dim,btn){
-  curDim=dim;
-  document.querySelectorAll('.map-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('map-leg-label').textContent=DIMS[dim].label;
-  document.getElementById('map-note').textContent=NOTES[dim];
-  if(window._mapReady)renderMapColors();
-  renderMapMetrics();
-}
-
-function renderMapColors(){
-  const isDark=matchMedia('(prefers-color-scheme: dark)').matches;
-  const unk=isDark?"#2a2a2a":"#d5d5d5";
-  document.querySelectorAll('#world-g path[data-id]').forEach(p=>{
-    const d=CD[+p.getAttribute('data-id')];
-    p.setAttribute('fill',d?colorFor(getVal(d,curDim)):unk);
-  });
-}
-
-function renderMapMetrics(){
-  const vals=Object.values(CD).map(d=>getVal(d,curDim));
-  const n=vals.length;
-  const avg=Math.round(vals.reduce((a,b)=>a+b,0)/n);
-  const hi=vals.filter(v=>v>=70).length;
-  const mid=vals.filter(v=>v>=50&&v<70).length;
-  const lo=vals.filter(v=>v<35).length;
-  document.getElementById('map-metrics').innerHTML=
-    mc("Global average",avg,n+" countries")+
-    mc("Score ≥ 70",hi+" countries",Math.round(hi/n*100)+"%")+
-    mc("Score 50–69",mid+" countries",Math.round(mid/n*100)+"%")+
-    mc("Score < 35",lo+" countries","Critical level");
-}
-function mc(l,v,s){return`<div class="mc"><div class="mc-label">${l}</div><div class="mc-val">${v}</div><div class="mc-sub">${s}</div></div>`}
-
-// smooth scroll for nav links
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    e.preventDefault();
-    document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
-  });
-});
-
-window.addEventListener('load',()=>{
-  renderMapMetrics();
-  document.getElementById('map-note').textContent=NOTES['total'];
-  d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world=>{
-    const isDark=matchMedia('(prefers-color-scheme: dark)').matches;
-    const water=isDark?"#1a2533":"#d0e8f5";
-    const border=isDark?"rgba(255,255,255,0.08)":"rgba(255,255,255,0.5)";
-    const unk=isDark?"#2a2a2a":"#d5d5d5";
-    const svg=d3.select('#world-svg');
-    svg.style('background',water);
-    const proj=d3.geoNaturalEarth1().scale(140).translate([450,230]);
-    const path=d3.geoPath(proj);
-    svg.select('#world-g').selectAll('path')
-      .data(topojson.feature(world,world.objects.countries).features)
-      .join('path')
-      .attr('data-id',d=>d.id)
-      .attr('d',path)
-      .attr('stroke',border)
-      .attr('stroke-width',0.4)
-      .attr('fill',d=>{const cd=CD[+d.id];return cd?colorFor(total(cd)):unk})
-      .on('mousemove',function(ev,d){
-        const cd=CD[+d.id];if(!cd)return;
-        const val=getVal(cd,curDim);
-        const wr=document.querySelector('.map-container').getBoundingClientRect();
-        let x=ev.clientX-wr.left+12,y=ev.clientY-wr.top-10;
-        if(x+170>wr.width)x-=185;
-        const tt=document.getElementById('map-tt');
-        tt.style.cssText=`left:${x}px;top:${y}px;display:block`;
-        document.getElementById('mt-n').textContent=cd.n;
-        document.getElementById('mt-dim').textContent=DIMS[curDim].dl;
-        document.getElementById('mt-v').textContent=val;
-        const tr=document.getElementById('mt-total-row');
-        if(curDim==='total'){tr.style.display='none'}
-        else{tr.style.display='flex';document.getElementById('mt-t').textContent=total(cd)}
-      })
-      .on('mouseleave',()=>document.getElementById('map-tt').style.display='none');
-    window._mapReady=true;
-  });
-});
-</script>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;title&gt;Three Principles — Security · Water · Education&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="description" content="A framework for solving humanity's greatest challenges — population growth, displacement, climate change, and inequality — by guaranteeing three foundations for every person on earth."&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="robots" content="index, follow"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta property="og:type" content="website"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta property="og:url" content="https://three-principles.org/"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta property="og:title" content="Three Principles — Security · Water · Education"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta property="og:description" content="Solving humanity's greatest challenges starts with three foundations: Security, Water, and Education. See where the world stands — and what changes when every person has all three."&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta property="og:image" content="https://three-principles.org/og-image.png"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="twitter:card" content="summary_large_image"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="twitter:title" content="Three Principles — Security · Water · Education"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="twitter:description" content="Solving humanity's greatest challenges starts with three foundations. See the global map and what a green world looks like."&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="twitter:image" content="https://three-principles.org/og-image.png"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;rect width='32' height='32' rx='8' fill='%231D9E75'/&gt;&lt;text y='24' x='4' font-size='22'&gt;3&lt;/text&gt;&lt;/svg&gt;"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;link rel="canonical" href="https://three-principles.org/"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" defer&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" defer&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;style&gt;</span></p>
+<p class="p1"><span class="s1">:root{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--bg:#fafaf8;--bg2:#f2f0eb;--bg3:#e8e6e0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text:#1a1a18;--text2:#5a5a56;--text3:#8a8a84;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--border:rgba(0,0,0,0.1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--green:#1D9E75;--green-light:#E1F5EE;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--purple:#534AB7;--purple-light:#EEEDFE;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--blue:#185FA5;--blue-light:#E6F1FB;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--amber:#854F0B;--amber-light:#FAEEDA;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--red-light:#FCEBEB;--red-dark:#791F1F;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">*{box-sizing:border-box;margin:0;padding:0}</span></p>
+<p class="p1"><span class="s1">html{scroll-behavior:smooth}</span></p>
+<p class="p1"><span class="s1">body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:0.5px solid var(--border);padding:0 2rem}</span></p>
+<p class="p1"><span class="s1">.nav-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}</span></p>
+<p class="p1"><span class="s1">.nav-logo{font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--text)}</span></p>
+<p class="p1"><span class="s1">.nav-links{display:flex;gap:1.5rem}</span></p>
+<p class="p1"><span class="s1">.nav-links a{font-size:13px;color:var(--text2);text-decoration:none;transition:color .15s}</span></p>
+<p class="p1"><span class="s1">.nav-links a:hover{color:var(--text)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">section{padding:5rem 2rem}</span></p>
+<p class="p1"><span class="s1">.inner{max-width:860px;margin:0 auto}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">#hero{background:var(--bg);padding:7rem 2rem 5rem}</span></p>
+<p class="p1"><span class="s1">.hero-kicker{font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:1.25rem}</span></p>
+<p class="p1"><span class="s1">.hero-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;line-height:1.2;margin-bottom:1.5rem;letter-spacing:-.02em}</span></p>
+<p class="p1"><span class="s1">.hero-title span{color:var(--green)}</span></p>
+<p class="p1"><span class="s1">.hero-lead{font-size:1.1rem;color:var(--text2);max-width:580px;line-height:1.8;margin-bottom:2rem}</span></p>
+<p class="p1"><span class="s1">.hero-badges{display:flex;gap:.75rem;flex-wrap:wrap}</span></p>
+<p class="p1"><span class="s1">.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;border:0.5px solid}</span></p>
+<p class="p1"><span class="s1">.badge-s{background:var(--purple-light);color:var(--purple);border-color:var(--purple)}</span></p>
+<p class="p1"><span class="s1">.badge-w{background:var(--blue-light);color:var(--blue);border-color:var(--blue)}</span></p>
+<p class="p1"><span class="s1">.badge-e{background:var(--amber-light);color:var(--amber);border-color:var(--amber)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">.sec-label{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--green);text-transform:uppercase;margin-bottom:.75rem}</span></p>
+<p class="p1"><span class="s1">.sec-title{font-size:1.6rem;font-weight:700;letter-spacing:-.01em;margin-bottom:.75rem}</span></p>
+<p class="p1"><span class="s1">.sec-lead{color:var(--text2);max-width:620px;line-height:1.8;margin-bottom:2.5rem}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">#why{background:var(--bg2)}</span></p>
+<p class="p1"><span class="s1">.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-bottom:2.5rem}</span></p>
+<p class="p1"><span class="s1">.why-card{background:var(--bg);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem}</span></p>
+<p class="p1"><span class="s1">.why-card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:18px}</span></p>
+<p class="p1"><span class="s1">.why-card h3{font-size:15px;font-weight:600;margin-bottom:.5rem}</span></p>
+<p class="p1"><span class="s1">.why-card p{font-size:14px;color:var(--text2);line-height:1.7}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">.svg-wrap{background:var(--bg2);border-radius:16px;overflow:hidden;padding:1rem}</span></p>
+<p class="p1"><span class="s1">.pull-quote{border-left:3px solid var(--green);padding:.75rem 1.25rem;margin:2rem 0;background:var(--green-light);border-radius:0 8px 8px 0}</span></p>
+<p class="p1"><span class="s1">.pull-quote p{font-size:1rem;font-style:italic;color:#085041;line-height:1.7}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">#beforeafter{background:var(--bg2)}</span></p>
+<p class="p1"><span class="s1">.ba-grid{display:grid;grid-template-columns:1fr 36px 1fr;gap:0;align-items:start}</span></p>
+<p class="p1"><span class="s1">.ba-col-head{font-size:13px;font-weight:600;padding:7px 12px;border-radius:8px;text-align:center;margin-bottom:10px}</span></p>
+<p class="p1"><span class="s1">.before-head{background:var(--red-light);color:var(--red-dark)}</span></p>
+<p class="p1"><span class="s1">.after-head{background:var(--green-light);color:#085041}</span></p>
+<p class="p1"><span class="s1">.ba-card{border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6}</span></p>
+<p class="p1"><span class="s1">.ba-before{background:var(--red-light);border:0.5px solid #F09595;margin-bottom:8px}</span></p>
+<p class="p1"><span class="s1">.ba-after{background:var(--green-light);border:0.5px solid #5DCAA5;margin-bottom:8px}</span></p>
+<p class="p1"><span class="s1">.ba-before b{color:var(--red-dark);font-weight:600}</span></p>
+<p class="p1"><span class="s1">.ba-after b{color:#085041;font-weight:600}</span></p>
+<p class="p1"><span class="s1">.ba-arrow{display:flex;align-items:flex-start;justify-content:center;padding-top:38px;color:var(--text3);font-size:20px}</span></p>
+<p class="p1"><span class="s1">.ba-section-label{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:1.25rem 0 .5rem}</span></p>
+<p class="p1"><span class="s1">.chip{display:inline-block;background:var(--green-light);color:#085041;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;margin-left:4px}</span></p>
+<p class="p1"><span class="s1">.ba-footer{margin-top:1.5rem;padding:1rem 1.25rem;background:var(--bg);border-radius:10px;font-size:13px;color:var(--text2);text-align:center;line-height:1.7;border:0.5px solid var(--border)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">#map-section{background:var(--bg)}</span></p>
+<p class="p1"><span class="s1">.map-tabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}</span></p>
+<p class="p1"><span class="s1">.map-tab{padding:6px 16px;border:0.5px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;background:var(--bg);color:var(--text2);transition:all .15s}</span></p>
+<p class="p1"><span class="s1">.map-tab.active{background:var(--text);color:var(--bg);border-color:var(--text)}</span></p>
+<p class="p1"><span class="s1">.map-container{position:relative;width:100%;background:var(--bg2);border-radius:16px;overflow:hidden;margin-bottom:.75rem}</span></p>
+<p class="p1"><span class="s1">#world-svg{width:100%;display:block}</span></p>
+<p class="p1"><span class="s1">.map-tooltip{position:absolute;background:var(--bg);border:0.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;pointer-events:none;display:none;z-index:10;min-width:150px}</span></p>
+<p class="p1"><span class="s1">.tt-name{font-weight:600;font-size:13px;margin-bottom:4px}</span></p>
+<p class="p1"><span class="s1">.tt-row{display:flex;justify-content:space-between;gap:12px;color:var(--text2);margin-bottom:2px}</span></p>
+<p class="p1"><span class="s1">.tt-val{color:var(--text);font-weight:600}</span></p>
+<p class="p1"><span class="s1">.map-legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);margin-bottom:1.25rem;flex-wrap:wrap}</span></p>
+<p class="p1"><span class="s1">.leg-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;min-width:140px;max-width:220px}</span></p>
+<p class="p1"><span class="s1">.leg-seg{flex:1}</span></p>
+<p class="p1"><span class="s1">.metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:.75rem}</span></p>
+<p class="p1"><span class="s1">.mc{background:var(--bg2);border-radius:10px;padding:.75rem 1rem}</span></p>
+<p class="p1"><span class="s1">.mc-label{font-size:11px;color:var(--text2);margin-bottom:3px}</span></p>
+<p class="p1"><span class="s1">.mc-val{font-size:20px;font-weight:700;color:var(--text)}</span></p>
+<p class="p1"><span class="s1">.mc-sub{font-size:11px;color:var(--text3);margin-top:1px}</span></p>
+<p class="p1"><span class="s1">.map-note{font-size:11px;color:var(--text3);line-height:1.6}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">#approach{background:var(--bg2)}</span></p>
+<p class="p1"><span class="s1">.approach-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}</span></p>
+<p class="p1"><span class="s1">.ap-card{background:var(--bg);border-radius:12px;padding:1.25rem;border:0.5px solid var(--border)}</span></p>
+<p class="p1"><span class="s1">.ap-num{font-size:11px;font-weight:700;color:var(--green);letter-spacing:.06em;margin-bottom:.5rem}</span></p>
+<p class="p1"><span class="s1">.ap-card h4{font-size:14px;font-weight:600;margin-bottom:.4rem}</span></p>
+<p class="p1"><span class="s1">.ap-card p{font-size:13px;color:var(--text2);line-height:1.65}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">#cta{background:var(--text);color:var(--bg);padding:5rem 2rem;text-align:center}</span></p>
+<p class="p1"><span class="s1">#cta .sec-label{color:#5DCAA5}</span></p>
+<p class="p1"><span class="s1">#cta .sec-title{color:var(--bg);font-size:2rem;margin-bottom:1rem}</span></p>
+<p class="p1"><span class="s1">#cta p{color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 2rem;line-height:1.8}</span></p>
+<p class="p1"><span class="s1">.cta-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}</span></p>
+<p class="p1"><span class="s1">.btn-primary{padding:10px 24px;background:#1D9E75;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}</span></p>
+<p class="p1"><span class="s1">.btn-secondary{padding:10px 24px;background:transparent;color:rgba(255,255,255,.8);border:0.5px solid rgba(255,255,255,.3);border-radius:8px;font-size:14px;cursor:pointer}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">footer{background:var(--bg);border-top:0.5px solid var(--border);padding:2rem;text-align:center}</span></p>
+<p class="p1"><span class="s1">footer p{font-size:12px;color:var(--text3)}</span></p>
+<p class="p1"><span class="s1">.divider{border:none;border-top:0.5px solid var(--border);margin:1.5rem 0}</span></p>
+<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;nav&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="nav-inner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span class="nav-logo"&gt;Three Principles Initiative&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="nav-links"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;a href="#why"&gt;Problem&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;a href="#structure"&gt;Framework&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;a href="#beforeafter"&gt;Vision&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;a href="#map-section"&gt;Current State&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;a href="#cta"&gt;Take Action&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/nav&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- HERO --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;section id="hero"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="inner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="hero-kicker"&gt;A Framework for Human Progress&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h1 class="hero-title"&gt;Solving humanity's greatest challenges&lt;br&gt;starts with &lt;span&gt;three foundations.&lt;/span&gt;&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p class="hero-lead"&gt;Population growth, refugees, climate change, inequality — for decades, the world's response has been symptomatic. Real, lasting solutions begin with guaranteeing three things for every human being on earth.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="hero-badges"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="badge badge-s"&gt;Security&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="badge badge-w"&gt;Water&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="badge badge-e"&gt;Education&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- WHY --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;section id="why"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="inner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="sec-label"&gt;Problem&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 class="sec-title"&gt;Why conventional approaches fall short&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p class="sec-lead"&gt;When refugees appear, we build camps. When poverty deepens, we send aid. When ecosystems degrade, we impose regulations. These responses are necessary — but they treat symptoms while the structural causes remain untouched.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="why-grid"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="why-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="why-card-icon" style="background:#FCEBEB"&gt;⚠&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3&gt;Treating symptoms&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p&gt;Siloed, issue-by-issue responses leave root causes intact. Problems grow more complex instead of being resolved.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="why-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="why-card-icon" style="background:#FFF3CD"&gt;↩&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3&gt;Aid dependency&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p&gt;External assistance often undermines local capacity. Recipients are not empowered to solve their own challenges sustainably.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="why-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="why-card-icon" style="background:#E1F5EE"&gt;⟳&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3&gt;Ignoring interdependence&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p&gt;Security, water, and education are deeply interconnected. Improving one accelerates the other two — yet this multiplier effect goes unused.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="pull-quote"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p&gt;"The problem is not that we are doing too little.&lt;br&gt;It is that we are not starting in the right place."&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- STRUCTURE --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;section id="structure"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="inner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="sec-label"&gt;Framework&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 class="sec-title"&gt;The Three Principles and why they work&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p class="sec-lead"&gt;The three principles are not independent targets — they form a self-reinforcing system. Improving one accelerates the other two, which in turn drives cascading progress on climate, gender equality, displacement, and inequality.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="svg-wrap" style="margin-bottom:2rem"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;svg width="100%" viewBox="0 0 680 540" role="img" aria-label="Structure diagram of the Three Principles"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;defs&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/marker&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/defs&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="20" y="20" width="640" height="500" rx="16" fill="none" stroke="#B4B2A9" stroke-width="0.5" stroke-dasharray="6 3"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#888780" x="38" y="42"&gt;Humanity's interconnected challenges&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="36" y="54" width="108" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#5F5E5A" x="90" y="76" text-anchor="middle"&gt;Climate change&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="536" y="54" width="108" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#5F5E5A" x="590" y="76" text-anchor="middle"&gt;Gender inequality&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="36" y="452" width="108" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#5F5E5A" x="90" y="474" text-anchor="middle"&gt;Displacement&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="536" y="452" width="108" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#5F5E5A" x="590" y="474" text-anchor="middle"&gt;Inequality&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="278" y="28" width="124" height="34" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#5F5E5A" x="340" y="50" text-anchor="middle"&gt;Population growth&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="120" y="100" width="440" height="340" rx="14" fill="none" stroke="#5DCAA5" stroke-width="0.5" stroke-dasharray="4 3"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#0F6E56" x="138" y="120"&gt;The Three Principles&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="248" y="225" width="184" height="52" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="14" font-weight="500" fill="#085041" x="340" y="246" text-anchor="middle"&gt;Positive spiral&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#0F6E56" x="340" y="264" text-anchor="middle"&gt;Mutual reinforcement&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="148" y="158" width="140" height="58" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="14" font-weight="500" fill="#3C3489" x="218" y="181" text-anchor="middle"&gt;Security&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#534AB7" x="218" y="201" text-anchor="middle"&gt;Dismantling vested interests&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="270" y="360" width="140" height="58" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="14" font-weight="500" fill="#0C447C" x="340" y="383" text-anchor="middle"&gt;Water&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#185FA5" x="340" y="403" text-anchor="middle"&gt;Foundation of life&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;rect x="392" y="158" width="140" height="58" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="14" font-weight="500" fill="#633806" x="462" y="181" text-anchor="middle"&gt;Education&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="12" fill="#854F0B" x="462" y="201" text-anchor="middle"&gt;Transforming next generation&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="254" y1="207" x2="296" y2="238" stroke="#7F77DD" stroke-width="1" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="340" y1="360" x2="340" y2="279" stroke="#378ADD" stroke-width="1" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="426" y1="207" x2="384" y2="238" stroke="#EF9F27" stroke-width="1" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;path d="M288 185 Q250 270 308 358" fill="none" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;path d="M372 358 Q430 270 392 190" fill="none" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="288" y1="183" x2="392" y2="183" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="280" y1="240" x2="154" y2="88" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="400" y1="240" x2="546" y2="88" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="280" y1="258" x2="154" y2="452" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="400" y1="258" x2="546" y2="452" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="340" y1="225" x2="340" y2="62" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="148" y1="518" x2="178" y2="518" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="11" fill="#5F5E5A" x="184" y="522"&gt;Mutual reinforcement&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;line x1="360" y1="518" x2="390" y2="518" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;text font-size="11" fill="#0F6E56" x="396" y="522"&gt;Cascading impact on challenges&lt;/text&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div style="background:var(--bg2);border-radius:12px;padding:1.5rem;border-left:3px solid var(--purple)"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="font-size:11px;font-weight:700;color:var(--purple);letter-spacing:.06em;margin-bottom:.5rem"&gt;SECURITY&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3 style="font-size:15px;font-weight:600;margin-bottom:.5rem"&gt;Security&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p style="font-size:13px;color:var(--text2);line-height:1.7"&gt;Every leader knows security matters. The real question is why it keeps failing. Conflicting vested interests, historical grievances, dysfunctional governance — these structural barriers demand a paradoxical approach: invest in water and education to build security from the ground up.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div style="background:var(--bg2);border-radius:12px;padding:1.5rem;border-left:3px solid var(--blue)"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.06em;margin-bottom:.5rem"&gt;WATER&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3 style="font-size:15px;font-weight:600;margin-bottom:.5rem"&gt;Water&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p style="font-size:13px;color:var(--text2);line-height:1.7"&gt;The most fundamental resource for life. When water access improves, child mortality falls, women reclaim time, agriculture stabilises, and a primary source of local conflict disappears. Of the three principles, water offers the fastest and most measurable returns.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div style="background:var(--bg2);border-radius:12px;padding:1.5rem;border-left:3px solid var(--amber)"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.06em;margin-bottom:.5rem"&gt;EDUCATION&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3 style="font-size:15px;font-weight:600;margin-bottom:.5rem"&gt;Education&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p style="font-size:13px;color:var(--text2);line-height:1.7"&gt;Each additional year of female schooling reduces birth rates by roughly 10%. Nobel laureate James Heckman found that early education investment yields 7–10% annual social returns. Education builds the next generation of problem-solvers — and the surest long-term defence against extremism.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- BEFORE / AFTER --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;section id="beforeafter"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="inner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="sec-label"&gt;Vision&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 class="sec-title"&gt;A world where the three principles are guaranteed&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p class="sec-lead"&gt;The changes below are not utopian projections — they follow directly from the evidence. And critically, they do not happen in isolation: each improvement triggers the next.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div style="display:grid;grid-template-columns:1fr 36px 1fr;margin-bottom:10px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-col-head before-head"&gt;The world today&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-col-head after-head"&gt;When the three principles are guaranteed&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-section-label"&gt;Security&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-grid"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-before"&gt;&lt;b&gt;56 active conflicts&lt;/b&gt; — the most since World War II. Over 110 million people are displaced. Power structures that profit from continued conflict remain firmly entrenched.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-arrow"&gt;→&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-after"&gt;A &lt;b&gt;minimum level of predictability&lt;/b&gt; allows people to plan ahead. Economic despair diminishes, removing the primary recruitment incentive for armed groups. Water and education investment becomes sustainable.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-section-label"&gt;Water&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-grid"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-before"&gt;&lt;b&gt;2.2 billion people&lt;/b&gt; lack safely managed drinking water. Over 800,000 children die annually from waterborne diseases. Women and girls spend hours each day collecting water.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-arrow"&gt;→&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-after"&gt;Child mortality drops sharply. &lt;b&gt;Women reclaim time&lt;/b&gt; — enabling schooling and economic participation. Agriculture stabilises. Local conflicts rooted in water scarcity dissolve.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-section-label"&gt;Education&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-grid"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-before"&gt;&lt;b&gt;240 million children&lt;/b&gt; are out of school globally, with girls and conflict zones most affected. Poverty and illiteracy reproduce themselves across generations.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-arrow"&gt;→&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-after"&gt;&lt;b&gt;Critical thinking&lt;/b&gt; builds resilience against extremist recruitment. Female education naturally reduces birth rates, easing population pressures without coercion.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-section-label"&gt;Secondary benefits&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-grid" style="margin-bottom:8px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-before"&gt;&lt;b&gt;Climate:&lt;/b&gt; Survival pressures drive deforestation and land overuse. Communities with no safety net cannot afford long-term thinking.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-arrow"&gt;→&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-after"&gt;When survival is no longer at stake, &lt;b&gt;long-term thinking&lt;/b&gt; becomes possible. Environmental literacy spreads through education systems.&lt;span class="chip"&gt;Deforestation -40%&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-grid" style="margin-bottom:8px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-before"&gt;&lt;b&gt;Gender equality:&lt;/b&gt; Women bear the heaviest burden of conflict, water scarcity, and lack of schooling. Decision-making power remains out of reach.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-arrow"&gt;→&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-after"&gt;Water access → time freed → schooling → economic participation: a &lt;b&gt;natural chain reaction&lt;/b&gt;, not a forced agenda.&lt;span class="chip"&gt;Gender gap -55%&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-grid" style="margin-bottom:8px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-before"&gt;&lt;b&gt;Displacement:&lt;/b&gt; Conflict, water scarcity, and economic despair force migration. Arrival in host countries generates new tensions.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-arrow"&gt;→&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-after"&gt;Migration becomes a &lt;b&gt;choice rather than a necessity&lt;/b&gt;. People have reasons to stay — safety, water, opportunity — dismantling the structural drivers of refugee crises.&lt;span class="chip"&gt;Forced displacement -60%&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-grid"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-before"&gt;&lt;b&gt;Economic inequality:&lt;/b&gt; Aid dependency and entrenched poverty lock out enormous latent markets and workforces.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-arrow"&gt;→&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ba-card ba-after"&gt;"Aid recipients" become &lt;b&gt;consumers and producers&lt;/b&gt;. Africa's population, projected at 2.5 billion by 2050, emerges as a new engine of the global economy.&lt;span class="chip"&gt;New market +5 billion&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ba-footer"&gt;The three principles are not independent targets — &lt;strong&gt;achieving one accelerates the other two.&lt;/strong&gt;&lt;br&gt;This self-reinforcing dynamic is what fundamentally distinguishes this framework from conventional siloed approaches.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- MAP --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;section id="map-section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="inner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="sec-label"&gt;Current State&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 class="sec-title"&gt;Where the world stands today&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p class="sec-lead"&gt;Country scores are derived from the Global Peace Index, WHO/UNICEF Joint Monitoring Programme, and the UNDP Education Index. Toggle between the composite score and each individual dimension.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="map-tabs"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="map-tab active" onclick="setMapTab('total',this)"&gt;Composite score&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="map-tab" onclick="setMapTab('s',this)"&gt;Security&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="map-tab" onclick="setMapTab('w',this)"&gt;Water&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="map-tab" onclick="setMapTab('e',this)"&gt;Education&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="map-container"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;svg id="world-svg" viewBox="0 0 900 440" role="img" aria-label="World map of Three Principles scores"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;g id="world-g"&gt;&lt;/g&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="map-tooltip" id="map-tt"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="tt-name" id="mt-n"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="tt-row"&gt;&lt;span id="mt-dim"&gt;&lt;/span&gt;&lt;span class="tt-val" id="mt-v"&gt;&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="tt-row" id="mt-total-row"&gt;&lt;span&gt;Composite&lt;/span&gt;&lt;span class="tt-val" id="mt-t"&gt;&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="map-legend"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span&gt;Low&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="leg-bar"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="leg-seg" style="background:#c0392b"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="leg-seg" style="background:#e67e22"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="leg-seg" style="background:#f1c40f"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="leg-seg" style="background:#2ecc71"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="leg-seg" style="background:#27ae60"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span&gt;High&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span id="map-leg-label" style="margin-left:8px;font-weight:600"&gt;Composite score&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="metrics-row" id="map-metrics"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p class="map-note" id="map-note"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- IMAGINE --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;section id="imagine" style="background:var(--text);padding:5rem 2rem;text-align:center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="inner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="sec-label" style="color:#5DCAA5"&gt;Imagine&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1.3;margin-bottom:1.5rem"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>What if that map&lt;br&gt;turned green?</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p style="color:rgba(255,255,255,.65);max-width:560px;margin:0 auto 2.5rem;line-height:1.85;font-size:1.05rem"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>Not through a single treaty, a technological breakthrough, or a wave of foreign aid —</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>but through the quiet, compounding effect of every child who goes to school,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>every village that gains access to clean water,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>every community that no longer has to flee.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p style="color:rgba(255,255,255,.5);max-width:480px;margin:0 auto;line-height:1.85;font-size:.95rem"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>The map does not need to turn green all at once.&lt;br&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>It only needs to start.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div style="margin-top:3rem;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div style="text-align:center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="font-size:2rem;font-weight:700;color:#2ecc71"&gt;+1 yr&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:4px"&gt;of schooling for girls&lt;br&gt;= birth rate −10%&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div style="width:0.5px;background:rgba(255,255,255,.15);height:56px;align-self:center"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div style="text-align:center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="font-size:2rem;font-weight:700;color:#2ecc71"&gt;$1&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:4px"&gt;invested in water &amp;amp; sanitation&lt;br&gt;= $4 economic return&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div style="width:0.5px;background:rgba(255,255,255,.15);height:56px;align-self:center"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div style="text-align:center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="font-size:2rem;font-weight:700;color:#2ecc71"&gt;163&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:4px"&gt;countries mapped.&lt;br&gt;Every one can improve.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- APPROACH --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;section id="approach"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="inner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="sec-label"&gt;Action&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 class="sec-title"&gt;Who needs to act, and how&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p class="sec-lead"&gt;Investment in the three principles protects human dignity and lays the foundation for sustainable economic growth. Humanitarian values and economic interest are not in conflict — they reinforce each other.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="approach-grid"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ap-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="ap-num"&gt;POLICY MAKERS&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h4&gt;For policymakers&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p&gt;Evaluate every policy through one lens: does it strengthen the three principles? Investment here is the most cost-effective way to prevent the far greater future costs of refugee crises, conflict, and pandemic.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ap-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="ap-num"&gt;BUSINESS &amp;amp; INVESTORS&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h4&gt;For business and investors&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p&gt;Every dollar invested in water and sanitation generates four dollars in economic return. Today's "aid recipient" regions are tomorrow's growth markets. Three-principles scores are a leading indicator of business risk.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ap-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="ap-num"&gt;CITIZENS &amp;amp; ACTIVISTS&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h4&gt;For citizens and activists&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p&gt;Demand that public funds and charitable giving go beyond symptomatic relief to structural solutions. Hold governments and institutions accountable to this common foundation.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="ap-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="ap-num"&gt;INTERNATIONAL ORGS&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h4&gt;For international organisations&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p&gt;Move beyond siloed programmes. Link water projects to education outcomes; connect education initiatives to security conditions. Coordinated investment unlocks the multiplier effect this framework is built on.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- CTA --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;section id="cta"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="inner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="sec-label"&gt;Join Us&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 class="sec-title"&gt;Start in the right place.&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p&gt;Humanity's challenges are not unsolvable. Without security, water, and education, there is no sustainable future — and no thriving global economy. The question is not whether we can afford to act. It is whether we can afford not to.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="cta-btns"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="btn-primary" onclick="shareTwitter()"&gt;Share on X / Twitter&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="btn-secondary" onclick="copyURL(this)"&gt;Copy link&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;footer&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;p&gt;Data sources: Global Peace Index 2025 (Institute for Economics &amp;amp; Peace) · WHO/UNICEF Joint Monitoring Programme 2024 · UNDP Human Development Index 2022&lt;br&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>Scores are estimates derived by normalising each index to 0–100 and applying a weighted average: Security 40% · Water 30% · Education 30%.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/footer&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;script&gt;</span></p>
+<p class="p1"><span class="s1">const CD={</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>4:{n:"Afghanistan",s:2,w:22,e:18},8:{n:"Albania",s:65,w:82,e:76},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>12:{n:"Algeria",s:52,w:79,e:64},24:{n:"Angola",s:42,w:41,e:38},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>32:{n:"Argentina",s:58,w:91,e:78},36:{n:"Australia",s:87,w:99,e:95},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>40:{n:"Austria",s:91,w:99,e:93},50:{n:"Bangladesh",s:45,w:58,e:48},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>56:{n:"Belgium",s:84,w:99,e:92},64:{n:"Bhutan",s:70,w:72,e:62},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>68:{n:"Bolivia",s:55,w:68,e:66},76:{n:"Brazil",s:48,w:87,e:72},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>104:{n:"Myanmar",s:18,w:48,e:42},116:{n:"Cambodia",s:52,w:61,e:53},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>120:{n:"Cameroon",s:38,w:42,e:43},124:{n:"Canada",s:88,w:99,e:94},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>140:{n:"Central African Rep.",s:8,w:15,e:12},144:{n:"Sri Lanka",s:55,w:80,e:71},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>152:{n:"Chile",s:72,w:91,e:83},156:{n:"China",s:62,w:86,e:74},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>170:{n:"Colombia",s:48,w:88,e:72},180:{n:"DR Congo",s:10,w:21,e:18},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>188:{n:"Costa Rica",s:74,w:92,e:80},192:{n:"Cuba",s:68,w:92,e:86},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>218:{n:"Ecuador",s:44,w:86,e:74},818:{n:"Egypt",s:48,w:82,e:61},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>231:{n:"Ethiopia",s:32,w:28,e:35},246:{n:"Finland",s:92,w:99,e:94},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>250:{n:"France",s:82,w:99,e:91},276:{n:"Germany",s:88,w:99,e:94},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>288:{n:"Ghana",s:58,w:58,e:58},300:{n:"Greece",s:72,w:99,e:86},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>320:{n:"Guatemala",s:38,w:78,e:60},324:{n:"Guinea",s:32,w:28,e:22},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>340:{n:"Honduras",s:35,w:79,e:60},356:{n:"India",s:52,w:68,e:58},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>360:{n:"Indonesia",s:58,w:72,e:62},364:{n:"Iran",s:42,w:88,e:68},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>368:{n:"Iraq",s:28,w:72,e:48},372:{n:"Ireland",s:92,w:99,e:94},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>376:{n:"Israel",s:38,w:99,e:90},380:{n:"Italy",s:80,w:99,e:89},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>392:{n:"Japan",s:88,w:99,e:93},400:{n:"Jordan",s:55,w:88,e:72},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>404:{n:"Kenya",s:42,w:42,e:52},408:{n:"North Korea",s:15,w:72,e:68},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>410:{n:"South Korea",s:82,w:99,e:93},418:{n:"Laos",s:58,w:58,e:50},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>422:{n:"Lebanon",s:32,w:62,e:72},430:{n:"Liberia",s:38,w:28,e:30},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>434:{n:"Libya",s:22,w:58,e:52},450:{n:"Madagascar",s:48,w:22,e:32},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>454:{n:"Malawi",s:52,w:48,e:42},458:{n:"Malaysia",s:70,w:92,e:78},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>484:{n:"Mexico",s:42,w:92,e:74},496:{n:"Mongolia",s:68,w:72,e:68},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>504:{n:"Morocco",s:58,w:78,e:58},508:{n:"Mozambique",s:35,w:28,e:28},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>516:{n:"Namibia",s:62,w:72,e:68},524:{n:"Nepal",s:55,w:62,e:52},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>528:{n:"Netherlands",s:88,w:99,e:93},554:{n:"New Zealand",s:90,w:99,e:95},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>566:{n:"Nigeria",s:28,w:38,e:38},578:{n:"Norway",s:92,w:99,e:95},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>586:{n:"Pakistan",s:32,w:52,e:38},604:{n:"Peru",s:52,w:82,e:72},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>608:{n:"Philippines",s:48,w:72,e:68},616:{n:"Poland",s:72,w:99,e:88},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>620:{n:"Portugal",s:88,w:99,e:88},642:{n:"Romania",s:68,w:82,e:80},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>643:{n:"Russia",s:18,w:88,e:82},646:{n:"Rwanda",s:58,w:52,e:55},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>682:{n:"Saudi Arabia",s:52,w:92,e:72},686:{n:"Senegal",s:52,w:42,e:42},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>694:{n:"Sierra Leone",s:42,w:28,e:30},706:{n:"Somalia",s:5,w:15,e:10},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>710:{n:"South Africa",s:48,w:72,e:72},716:{n:"Zimbabwe",s:38,w:52,e:52},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>724:{n:"Spain",s:84,w:99,e:91},729:{n:"Sudan",s:12,w:38,e:32},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>752:{n:"Sweden",s:90,w:99,e:94},756:{n:"Switzerland",s:90,w:99,e:94},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>760:{n:"Syria",s:8,w:38,e:38},764:{n:"Thailand",s:62,w:88,e:72},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>788:{n:"Tunisia",s:58,w:82,e:70},792:{n:"Turkey",s:48,w:88,e:74},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>800:{n:"Uganda",s:40,w:42,e:42},804:{n:"Ukraine",s:15,w:88,e:84},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>826:{n:"United Kingdom",s:84,w:99,e:93},840:{n:"United States",s:72,w:99,e:92},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>858:{n:"Uruguay",s:78,w:92,e:82},862:{n:"Venezuela",s:28,w:72,e:68},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>887:{n:"Yemen",s:5,w:25,e:30},894:{n:"Zambia",s:52,w:48,e:52}</span></p>
+<p class="p1"><span class="s1">};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function total(d){return Math.round(d.s*0.4+d.w*0.3+d.e*0.3)}</span></p>
+<p class="p1"><span class="s1">function getVal(d,dim){return dim==='total'?total(d):d[dim]}</span></p>
+<p class="p1"><span class="s1">function colorFor(v){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(v&gt;=80)return"#27ae60";if(v&gt;=65)return"#2ecc71";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(v&gt;=50)return"#f1c40f";if(v&gt;=35)return"#e67e22";return"#c0392b";</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">const DIMS={</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>total:{label:"Composite score (Security 40% · Water 30% · Education 30%)",dl:"Composite"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>s:{label:"Security score",dl:"Security"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>w:{label:"Water access score",dl:"Water"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>e:{label:"Education score",dl:"Education"}</span></p>
+<p class="p1"><span class="s1">};</span></p>
+<p class="p1"><span class="s1">const NOTES={</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>total:"Composite = Security ×40% + Water ×30% + Education ×30%. Sources: Global Peace Index 2025 · WHO/UNICEF JMP 2024 · UNDP Education Index 2022.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>s:"Security score: Global Peace Index 2025, inverted and normalised (1.0 = most peaceful → 100, 5.0 = least peaceful → 0).",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>w:"Water score: WHO/UNICEF JMP 2024 — share of population with safely managed drinking water services.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>e:"Education score: UNDP Human Development Index 2022 Education Index converted to 0–100 scale."</span></p>
+<p class="p1"><span class="s1">};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">let curDim='total';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function setMapTab(dim,btn){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>curDim=dim;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.map-tab').forEach(t=&gt;t.classList.remove('active'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>btn.classList.add('active');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('map-leg-label').textContent=DIMS[dim].label;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('map-note').textContent=NOTES[dim];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(window._mapReady)renderMapColors();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderMapMetrics();</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function renderMapColors(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const isDark=matchMedia('(prefers-color-scheme: dark)').matches;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const unk=isDark?"#2a2a2a":"#d5d5d5";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.querySelectorAll('#world-g path[data-id]').forEach(p=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const d=CD[+p.getAttribute('data-id')];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>p.setAttribute('fill',d?colorFor(getVal(d,curDim)):unk);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>});</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function renderMapMetrics(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const vals=Object.values(CD).map(d=&gt;getVal(d,curDim));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const n=vals.length;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const avg=Math.round(vals.reduce((a,b)=&gt;a+b,0)/n);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const hi=vals.filter(v=&gt;v&gt;=70).length;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const mid=vals.filter(v=&gt;v&gt;=50&amp;&amp;v&lt;70).length;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const lo=vals.filter(v=&gt;v&lt;35).length;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('map-metrics').innerHTML=</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>mc("Global average",avg,n+" countries")+</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>mc("Score ≥ 70",hi+" countries",Math.round(hi/n*100)+"%")+</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>mc("Score 50–69",mid+" countries",Math.round(mid/n*100)+"%")+</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>mc("Score &lt; 35",lo+" countries","Critical level");</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">function mc(l,v,s){return`&lt;div class="mc"&gt;&lt;div class="mc-label"&gt;${l}&lt;/div&gt;&lt;div class="mc-val"&gt;${v}&lt;/div&gt;&lt;div class="mc-sub"&gt;${s}&lt;/div&gt;&lt;/div&gt;`}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// share &amp; copy</span></p>
+<p class="p1"><span class="s1">function shareTwitter(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const txt=encodeURIComponent("Security. Water. Education.\n\nThree foundations. One framework for human progress.\n\nExplore the global map → https://three-principles.org\n\n#GlobalDevelopment #SDGs #WaterAccess #Education");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>window.open('https://twitter.com/intent/tweet?text='+txt,'_blank');</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">function copyURL(btn){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>navigator.clipboard.writeText('https://three-principles.org').then(()=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const orig=btn.textContent;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>btn.textContent='Copied!';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setTimeout(()=&gt;btn.textContent=orig,2000);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>});</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// smooth scroll for nav links</span></p>
+<p class="p1"><span class="s1">document.querySelectorAll('a[href^="#"]').forEach(a=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>a.addEventListener('click',e=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>e.preventDefault();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>});</span></p>
+<p class="p1"><span class="s1">});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">window.addEventListener('load',()=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderMapMetrics();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('map-note').textContent=NOTES['total'];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const isDark=matchMedia('(prefers-color-scheme: dark)').matches;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const water=isDark?"#1a2533":"#d0e8f5";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const border=isDark?"rgba(255,255,255,0.08)":"rgba(255,255,255,0.5)";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const unk=isDark?"#2a2a2a":"#d5d5d5";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const svg=d3.select('#world-svg');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>svg.style('background',water);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const proj=d3.geoNaturalEarth1().scale(140).translate([450,230]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const path=d3.geoPath(proj);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>svg.select('#world-g').selectAll('path')</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.data(topojson.feature(world,world.objects.countries).features)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.join('path')</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.attr('data-id',d=&gt;d.id)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.attr('d',path)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.attr('stroke',border)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.attr('stroke-width',0.4)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.attr('fill',d=&gt;{const cd=CD[+d.id];return cd?colorFor(total(cd)):unk})</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.on('mousemove',function(ev,d){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const cd=CD[+d.id];if(!cd)return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const val=getVal(cd,curDim);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const wr=document.querySelector('.map-container').getBoundingClientRect();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let x=ev.clientX-wr.left+12,y=ev.clientY-wr.top-10;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(x+170&gt;wr.width)x-=185;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const tt=document.getElementById('map-tt');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>tt.style.cssText=`left:${x}px;top:${y}px;display:block`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('mt-n').textContent=cd.n;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('mt-dim').textContent=DIMS[curDim].dl;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('mt-v').textContent=val;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const tr=document.getElementById('mt-total-row');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(curDim==='total'){tr.style.display='none'}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>else{tr.style.display='flex';document.getElementById('mt-t').textContent=total(cd)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>})</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.on('mouseleave',()=&gt;document.getElementById('map-tt').style.display='none');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>window._mapReady=true;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>});</span></p>
+<p class="p1"><span class="s1">});</span></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>
 </html>
