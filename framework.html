@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Three Principles Framework — Security, Water, Education</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+:root{
+  --text:#1a1a18;
+  --text2:#4a4a46;
+  --text3:#8a8a84;
+  --bg:#fafaf8;
+  --green:#1D9E75;
+  --green-light:#E1F5EE;
+  --border:rgba(0,0,0,0.1);
+  --accent:#534AB7;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{
+  font-family:'EB Garamond',Georgia,serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+  max-width:780px;
+  margin:0 auto;
+  padding:4rem 3rem;
+}
+
+/* HEADER */
+.doc-header{border-bottom:1px solid var(--border);padding-bottom:2.5rem;margin-bottom:3rem}
+.doc-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--green);text-transform:uppercase;margin-bottom:1rem}
+.doc-title{font-size:2.6rem;font-weight:500;line-height:1.2;letter-spacing:-.02em;margin-bottom:1rem}
+.doc-subtitle{font-size:1.15rem;color:var(--text2);font-style:italic;margin-bottom:2rem;line-height:1.6}
+.doc-meta{font-family:'Inter',sans-serif;font-size:12px;color:var(--text3);display:flex;gap:2rem;flex-wrap:wrap}
+.doc-meta span{display:flex;align-items:center;gap:6px}
+
+/* ABSTRACT */
+.abstract{background:var(--green-light);border-left:3px solid var(--green);padding:1.5rem 2rem;margin-bottom:3rem;border-radius:0 8px 8px 0}
+.abstract-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--green);text-transform:uppercase;margin-bottom:.75rem}
+.abstract p{font-size:.95rem;line-height:1.75;color:#085041}
+
+/* TOC */
+.toc{margin-bottom:3rem;padding:1.5rem 2rem;border:0.5px solid var(--border);border-radius:8px}
+.toc-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:1rem}
+.toc ol{padding-left:1.25rem}
+.toc li{font-family:'Inter',sans-serif;font-size:13px;color:var(--text2);margin-bottom:.4rem;line-height:1.5}
+.toc li span{color:var(--text3);margin-right:.5rem}
+
+/* SECTIONS */
+.section{margin-bottom:3.5rem}
+.section-num{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--green);text-transform:uppercase;margin-bottom:.5rem}
+h2{font-size:1.6rem;font-weight:500;letter-spacing:-.01em;margin-bottom:1.25rem;line-height:1.3}
+h3{font-size:1.15rem;font-weight:500;margin-bottom:.75rem;margin-top:2rem;color:var(--text)}
+p{margin-bottom:1.25rem;font-size:1rem}
+.lead{font-size:1.1rem;color:var(--text2);margin-bottom:1.5rem;font-style:italic}
+
+/* PRINCIPLE CARDS */
+.principle{border:0.5px solid var(--border);border-radius:10px;padding:1.75rem 2rem;margin-bottom:1.5rem}
+.principle-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem}
+.principle-tag{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:10px}
+.tag-s{background:#EEEDFE;color:var(--accent)}
+.tag-w{background:#E6F1FB;color:#185FA5}
+.tag-e{background:#FAEEDA;color:#854F0B}
+.principle h3{margin:0;font-size:1.2rem}
+.principle-sub{font-family:'Inter',sans-serif;font-size:12px;color:var(--text3);margin-bottom:1rem;font-style:normal}
+
+/* CALLOUT */
+.callout{background:#f5f4f0;border-radius:8px;padding:1.25rem 1.5rem;margin:1.5rem 0;font-size:.95rem}
+.callout-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:.5rem}
+
+/* QUOTE */
+blockquote{border-left:2px solid var(--green);padding:.75rem 1.5rem;margin:2rem 0;color:var(--text2);font-style:italic;font-size:1.05rem}
+
+/* DATA TABLE */
+table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-family:'Inter',sans-serif;font-size:13px}
+th{text-align:left;padding:.6rem .75rem;border-bottom:1.5px solid var(--border);font-weight:600;color:var(--text2);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+td{padding:.6rem .75rem;border-bottom:0.5px solid var(--border);color:var(--text);vertical-align:top;line-height:1.5}
+tr:last-child td{border-bottom:none}
+.td-green{color:var(--green);font-weight:600}
+
+/* CASE STUDIES */
+.case{margin-bottom:2rem;padding-bottom:2rem;border-bottom:0.5px solid var(--border)}
+.case:last-child{border-bottom:none}
+.case-country{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:.25rem}
+.case h4{font-size:1.05rem;font-weight:500;margin-bottom:.75rem}
+
+/* DATA POINTS */
+.data-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:1.5rem 0}
+.data-point{text-align:center;padding:1.25rem;background:#f5f4f0;border-radius:8px}
+.data-val{font-family:'Inter',sans-serif;font-size:1.8rem;font-weight:600;color:var(--green);margin-bottom:.25rem}
+.data-label{font-family:'Inter',sans-serif;font-size:11px;color:var(--text2);line-height:1.4}
+
+/* RIPPLE TABLE */
+.ripple-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+.ripple-card{border:0.5px solid var(--border);border-radius:8px;padding:1.25rem}
+.ripple-title{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:.5rem}
+.ripple-card p{font-size:.9rem;margin:0;line-height:1.6}
+
+/* RECOMMENDATIONS */
+.rec{display:grid;grid-template-columns:auto 1fr;gap:1rem;margin-bottom:1.25rem;align-items:start}
+.rec-num{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--green);background:var(--green-light);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.rec-content h4{font-size:1rem;font-weight:500;margin-bottom:.25rem}
+.rec-content p{font-size:.9rem;color:var(--text2);margin:0}
+
+/* FOOTER */
+.doc-footer{margin-top:4rem;padding-top:2rem;border-top:0.5px solid var(--border);font-family:'Inter',sans-serif;font-size:11px;color:var(--text3);line-height:1.7}
+.doc-footer strong{color:var(--text2)}
+
+/* DIVIDER */
+hr{border:none;border-top:0.5px solid var(--border);margin:2.5rem 0}
+
+/* PRINT */
+@media print{
+  body{padding:2rem;max-width:100%}
+  .no-print{display:none}
+  .section{page-break-inside:avoid}
+  .principle{page-break-inside:avoid}
+}
+
+/* PRINT BUTTON */
+.print-btn{
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  padding:8px 20px;
+  background:var(--green);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  margin-top:1rem;
+  display:inline-block;
+}
+</style>
+</head>
+<body>
+
+<!-- PRINT BUTTON -->
+<div class="no-print" style="text-align:right;margin-bottom:2rem">
+  <button class="print-btn" onclick="window.print()">Save as PDF</button>
+</div>
+
+<!-- HEADER -->
+<div class="doc-header">
+  <div class="doc-label">Framework Document</div>
+  <h1 class="doc-title">The Three Principles:<br>Security, Water, Education</h1>
+  <p class="doc-subtitle">A structural framework for addressing humanity's most persistent challenges</p>
+  <div class="doc-meta">
+    <span>📄 Three Principles Initiative</span>
+    <span>🌐 three-principles.org</span>
+    <span>📅 2025</span>
+  </div>
+</div>
+
+<!-- ABSTRACT -->
+<div class="abstract">
+  <div class="abstract-label">Abstract</div>
+  <p>
+    Population displacement, environmental degradation, economic inequality, and gender disparity
+    are conventionally addressed as distinct policy domains. This framework proposes that these
+    challenges share three common structural foundations — Security, Water, and Education —
+    whose simultaneous insufficiency creates self-reinforcing cycles of instability.
+    Rather than assigning responsibility to any particular actor or government,
+    this document examines the systemic conditions that prevent these foundations from being met,
+    and presents an evidence-based case for why their coordinated provision represents
+    the most cost-effective path toward sustainable human development.
+  </p>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-label">Contents</div>
+  <ol>
+    <li><span>1.</span>The Problem with Conventional Approaches</li>
+    <li><span>2.</span>The Three Principles: A Structural Framework</li>
+    <li><span>3.</span>Why Security Is the Most Structurally Complex Challenge</li>
+    <li><span>4.</span>The Self-Reinforcing Cycle: How the Three Principles Interact</li>
+    <li><span>5.</span>Evidence from the Field: Case Studies</li>
+    <li><span>6.</span>Secondary Effects: Climate, Gender, Displacement, and Inequality</li>
+    <li><span>7.</span>The Economic Case: From Aid Recipients to Growth Markets</li>
+    <li><span>8.</span>Recommendations by Stakeholder</li>
+    <li><span>9.</span>Data Methodology and Sources</li>
+  </ol>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+  <div class="section-num">Section 1</div>
+  <h2>The Problem with Conventional Approaches</h2>
+  <p class="lead">For decades, the international community has responded to complex human challenges with well-intentioned but fundamentally fragmented strategies.</p>
+
+  <p>When displacement occurs, emergency infrastructure is built. When poverty deepens, aid is deployed. When ecosystems degrade, regulations are introduced. Each intervention is necessary. None is sufficient.</p>
+
+  <p>The limitations of this approach are structural, not motivational. Resources, expertise, and institutional mandates are organised around discrete problem categories — humanitarian, environmental, economic, educational — when the underlying drivers of these problems are deeply interconnected.</p>
+
+  <blockquote>
+    "The challenge is not that the world lacks the will to act.<br>
+    It is that action has consistently begun in the wrong place."
+  </blockquote>
+
+  <p>The consequences are predictable: aid dependency rather than self-sustaining development, symptomatic relief rather than structural change, and the recurrence of the same crises in successive generations.</p>
+
+  <div class="data-row">
+    <div class="data-point">
+      <div class="data-val">110M+</div>
+      <div class="data-label">people forcibly displaced globally (2024)</div>
+    </div>
+    <div class="data-point">
+      <div class="data-val">2.2B</div>
+      <div class="data-label">people without safely managed drinking water</div>
+    </div>
+    <div class="data-point">
+      <div class="data-val">240M</div>
+      <div class="data-label">children out of school globally</div>
+    </div>
+    <div class="data-point">
+      <div class="data-val">56</div>
+      <div class="data-label">active conflicts — the most since World War II</div>
+    </div>
+  </div>
+
+  <p>These figures do not represent separate failures. They are symptoms of the same underlying structural deficit.</p>
+</div>
+
+<hr>
+
+<!-- SECTION 2 -->
+<div class="section">
+  <div class="section-num">Section 2</div>
+  <h2>The Three Principles: A Structural Framework</h2>
+  <p class="lead">This framework identifies three foundational conditions whose provision — for every person, without exception — creates the structural prerequisites for sustainable human development.</p>
+
+  <div class="principle">
+    <div class="principle-header">
+      <span class="principle-tag tag-s">Security</span>
+      <h3>Physical and Institutional Safety</h3>
+    </div>
+    <p class="principle-sub">The condition in which individuals and communities can plan, invest, and build without the overriding threat of violence or institutional failure.</p>
+    <p>Security, as used in this framework, refers not to the geopolitical balance of power between states, but to the lived conditions of individuals and communities. Where the structures that sustain conflict — economic incentives for armed actors, collapse of civic institutions, erosion of rule of law — remain intact, investment in water and education cannot take root.</p>
+    <p>Security is treated here as a systemic condition rather than a political judgement. The framework does not evaluate the conduct of specific governments, but examines the structural factors — economic, institutional, and historical — that determine whether communities can maintain the minimum predictability required for development to occur.</p>
+  </div>
+
+  <div class="principle">
+    <div class="principle-header">
+      <span class="principle-tag tag-w">Water</span>
+      <h3>Access to Safely Managed Water and Sanitation</h3>
+    </div>
+    <p class="principle-sub">The most immediate, measurable, and cost-effective single intervention in the framework.</p>
+    <p>Access to clean water is the most direct proxy for human dignity and the most measurable lever for cascading development outcomes. When water access improves, child mortality falls, women reclaim productive time, agriculture stabilises, and a primary driver of local resource conflict is removed.</p>
+    <div class="callout">
+      <div class="callout-label">Evidence</div>
+      Every $1 invested in water and sanitation generates approximately $4 in economic returns (WHO, 2012). Women in water-scarce communities spend an estimated 40 billion hours per year collecting water — time that, when recovered, correlates directly with increases in female school enrollment and economic participation.
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-header">
+      <span class="principle-tag tag-e">Education</span>
+      <h3>Access to Foundational and Continuing Education</h3>
+    </div>
+    <p class="principle-sub">The mechanism through which the effects of the other two principles compound across generations.</p>
+    <p>Education is the only intervention that simultaneously addresses population dynamics, economic productivity, civic participation, environmental stewardship, and resilience to extremist recruitment. Its effects are slower to manifest than those of water access, but uniquely durable.</p>
+    <div class="callout">
+      <div class="callout-label">Evidence</div>
+      Each additional year of female schooling is associated with an approximately 10% reduction in birth rates (World Bank). Nobel laureate James Heckman's research demonstrates that early childhood education generates social returns of 7–10% annually — among the highest of any public investment. Communities with higher educational attainment demonstrate measurably greater resilience to radicalisation and extremist recruitment.
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- SECTION 3 -->
+<div class="section">
+  <div class="section-num">Section 3</div>
+  <h2>Why Security Is the Most Structurally Complex Challenge</h2>
+  <p class="lead">Unlike water infrastructure or educational programmes, security cannot be delivered through technical or financial intervention alone. Its absence reflects structural conditions that require structural solutions.</p>
+
+  <p>Every stakeholder — governments, international institutions, civil society — acknowledges the centrality of security to human development. The persistent gap between this acknowledgement and its realisation reflects not a lack of will, but a set of structural barriers that conventional approaches have been unable to resolve.</p>
+
+  <h3>The Structural Barriers</h3>
+
+  <table>
+    <tr>
+      <th>Barrier</th>
+      <th>Mechanism</th>
+      <th>Implication</th>
+    </tr>
+    <tr>
+      <td>Economic incentives for conflict</td>
+      <td>Armed actors, resource extractors, and weapons suppliers may derive economic benefit from sustained instability</td>
+      <td>External aid and development investment are insufficient without addressing these incentive structures</td>
+    </tr>
+    <tr>
+      <td>Historical grievance and institutional distrust</td>
+      <td>Colonial legacies, ethnic conflict, and state failure generate multi-generational cycles of mistrust</td>
+      <td>Security interventions that ignore historical context tend to produce short-term stability without durable peace</td>
+    </tr>
+    <tr>
+      <td>Absence of legitimate institutions</td>
+      <td>Where judicial, security, and civic institutions lack legitimacy, external support reinforces fragile structures rather than building durable ones</td>
+      <td>Institution-building requires longer time horizons than most funding cycles allow</td>
+    </tr>
+    <tr>
+      <td>Economic despair and youth unemployment</td>
+      <td>In contexts of high youth unemployment, armed or criminal organisations offer both income and identity</td>
+      <td>Economic development and education are among the most effective forms of security investment</td>
+    </tr>
+  </table>
+
+  <h3>A Paradoxical but Evidence-Based Approach</h3>
+  <p>This framework proposes that security is most effectively built indirectly — through investment in water and education — rather than through direct security intervention alone. This is not a counsel of passivity, but a recognition that the structural conditions for security are created by the same investments that address poverty, displacement, and inequality.</p>
+
+  <div class="callout">
+    <div class="callout-label">Case Evidence</div>
+    In the Jordan River Basin, joint water management arrangements between parties in active political conflict have sustained cooperative dialogue where diplomatic channels have failed. In post-genocide Rwanda, an education reform programme emphasising shared national identity over ethnic distinction has contributed to a measurable reduction in inter-community tension over two decades.
+  </div>
+
+  <p>The framework does not evaluate the performance of specific governments or assign political responsibility for insecurity. It identifies the structural conditions — economic, institutional, historical — that prevent the minimum predictability required for development, and examines where investment in water and education can begin to shift those conditions.</p>
+</div>
+
+<hr>
+
+<!-- SECTION 4 -->
+<div class="section">
+  <div class="section-num">Section 4</div>
+  <h2>The Self-Reinforcing Cycle</h2>
+  <p class="lead">The three principles do not operate independently. Each conditions and accelerates the others, creating either a virtuous or a vicious cycle depending on whether the foundational investments are made.</p>
+
+  <table>
+    <tr>
+      <th>When this is absent...</th>
+      <th>This follows...</th>
+      <th>Which causes...</th>
+    </tr>
+    <tr>
+      <td>Security</td>
+      <td>Water infrastructure is destroyed or cannot be built; schools cannot operate</td>
+      <td>Deepening poverty, displacement, recruitment into armed groups</td>
+    </tr>
+    <tr>
+      <td>Water</td>
+      <td>Child mortality rises; women's time is consumed by collection; agriculture fails</td>
+      <td>Economic collapse, localised conflict over resources, girls kept out of school</td>
+    </tr>
+    <tr>
+      <td>Education</td>
+      <td>Poverty reproduces across generations; populations are more vulnerable to extremism</td>
+      <td>Weak institutions, high birth rates, reduced capacity to manage environmental or economic shocks</td>
+    </tr>
+  </table>
+
+  <p>Conversely, when each foundation is secured — even partially — the positive effects compound. Water access creates time for schooling. Education generates the human capital for institution-building. Stronger institutions reduce the structural conditions for conflict. The cycle, once initiated, becomes self-sustaining.</p>
+</div>
+
+<hr>
+
+<!-- SECTION 5 -->
+<div class="section">
+  <div class="section-num">Section 5</div>
+  <h2>Evidence from the Field: Case Studies</h2>
+
+  <div class="case">
+    <div class="case-country">Rwanda</div>
+    <h4>From catastrophic institutional collapse to sustained development through education reform</h4>
+    <p>Following the 1994 genocide — among the most rapid and complete collapses of civic institutions in modern history — Rwanda undertook a systematic reconstruction centred on education. A reformed curriculum emphasising shared national identity, combined with near-universal primary enrollment (reaching 99%), contributed to a measurable reduction in inter-ethnic tension and sustained economic growth averaging 7–8% annually over two decades.</p>
+    <p>The Rwanda case does not suggest that education alone resolves deep historical trauma. It demonstrates that deliberate, sustained investment in education can shift the inter-generational transmission of conflict identity — one of the most intractable structural barriers to security.</p>
+  </div>
+
+  <div class="case">
+    <div class="case-country">Bangladesh</div>
+    <h4>Female education as the most cost-effective population and development intervention</h4>
+    <p>Bangladesh reduced its total fertility rate from 6.9 in 1970 to approximately 2.0 by 2020 — a transformation achieved primarily through female education and water and sanitation improvements, without coercive population policy. Simultaneously, child mortality fell by more than 75%, and the country sustained GDP growth averaging over 6% annually for two decades.</p>
+    <p>This case demonstrates that the interaction of water access (reducing waterborne disease, freeing women's time) and female education (delaying marriage, increasing economic participation) produces compounding development outcomes that neither intervention achieves in isolation.</p>
+  </div>
+
+  <div class="case">
+    <div class="case-country">Costa Rica</div>
+    <h4>Reallocation from military to human development as a long-term security strategy</h4>
+    <p>In 1948, Costa Rica constitutionally abolished its standing army, redirecting defence expenditure to education and public health. Over the following seven decades, it became the most stable democracy in Central America, achieved near-universal literacy, and maintains human development indicators substantially above regional averages — without the recurring cycles of political violence that have affected neighbouring states.</p>
+    <p>The Costa Rica case illustrates that security, understood as structural stability rather than military capacity, can be more durably achieved through investment in education and institutional development than through conventional security expenditure.</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- SECTION 6 -->
+<div class="section">
+  <div class="section-num">Section 6</div>
+  <h2>Secondary Effects: Climate, Gender, Displacement, and Inequality</h2>
+  <p class="lead">When the three principles are structurally secured, the effects extend well beyond the immediate beneficiaries.</p>
+
+  <div class="ripple-grid">
+    <div class="ripple-card">
+      <div class="ripple-title">Climate & Environment</div>
+      <p>Communities under existential economic pressure are structurally unable to prioritise long-term environmental stewardship. When survival pressures are reduced through water access and economic opportunity generated by education, communities develop both the capacity and the incentive to manage natural resources sustainably. Research suggests that this structural shift could reduce deforestation rates in high-pressure regions by up to 40%.</p>
+    </div>
+    <div class="ripple-card">
+      <div class="ripple-title">Gender Equality</div>
+      <p>Women and girls bear a disproportionate share of the burden created by water scarcity, conflict, and lack of educational access. The provision of the three principles removes the structural barriers to female participation without requiring specific gender-targeted interventions: water access restores time, security removes physical threat, and education opens economic opportunity. Estimates suggest a 55% reduction in gender participation gaps under full provision.</p>
+    </div>
+    <div class="ripple-card">
+      <div class="ripple-title">Forced Displacement</div>
+      <p>The primary drivers of forced displacement — armed conflict, water scarcity, and economic collapse — are each addressed directly by one of the three principles. When all three are structurally secured, migration becomes a matter of choice rather than survival, removing the conditions that generate refugee crises. Modelling suggests a potential 60% reduction in forced displacement under full provision of the three principles.</p>
+    </div>
+    <div class="ripple-card">
+      <div class="ripple-title">Economic Inequality</div>
+      <p>The regions currently characterised by the lowest three-principles scores contain the largest concentrations of young, growing populations. These populations represent latent economic capacity that, when unlocked through education and security, generate new consumption and production at scale. Sub-Saharan Africa alone is projected to reach 2.5 billion people by 2050 — with profound implications for global economic growth if the structural foundations for participation are established.</p>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- SECTION 7 -->
+<div class="section">
+  <div class="section-num">Section 7</div>
+  <h2>The Economic Case: From Aid Recipients to Growth Markets</h2>
+  <p class="lead">Investment in the three principles is not a cost. It is the precondition for the formation of the world's next significant growth markets.</p>
+
+  <p>The regions with the lowest three-principles scores today — sub-Saharan Africa, parts of South and Southeast Asia, fragile states across the Middle East — are precisely those with the youngest, fastest-growing populations. The structural question is not whether these populations will become economically significant, but whether the conditions for their participation in the global economy will be established in time.</p>
+
+  <p>The economic returns on three-principles investment are well-documented at the individual intervention level:</p>
+
+  <table>
+    <tr>
+      <th>Investment</th>
+      <th>Return</th>
+      <th>Source</th>
+    </tr>
+    <tr>
+      <td>Water and sanitation</td>
+      <td class="td-green">$4 economic return per $1 invested</td>
+      <td>WHO, 2012</td>
+    </tr>
+    <tr>
+      <td>Early childhood education</td>
+      <td class="td-green">7–10% annual social return</td>
+      <td>Heckman, 2006</td>
+    </tr>
+    <tr>
+      <td>Female secondary education</td>
+      <td class="td-green">~10% reduction in birth rate per year</td>
+      <td>World Bank, 2018</td>
+    </tr>
+    <tr>
+      <td>Conflict prevention vs. resolution</td>
+      <td class="td-green">Estimated 16:1 cost advantage</td>
+      <td>Institute for Economics & Peace, 2023</td>
+    </tr>
+  </table>
+
+  <p>Beyond individual returns, the systemic effect of three-principles provision at scale is the creation of new markets. The transition from subsistence to participation — in consumption, production, and civic life — is the most significant economic development opportunity of the coming century. The three-principles framework provides a structural map of where that transition is most proximate and what investment is required to catalyse it.</p>
+
+  <blockquote>
+    Economic prosperity and humanitarian values are not in tension.<br>
+    Investment in the three principles advances both simultaneously.
+  </blockquote>
+</div>
+
+<hr>
+
+<!-- SECTION 8 -->
+<div class="section">
+  <div class="section-num">Section 8</div>
+  <h2>Recommendations by Stakeholder</h2>
+
+  <h3>For Policymakers and Governments</h3>
+  <div class="rec">
+    <div class="rec-num">1</div>
+    <div class="rec-content">
+      <h4>Adopt the three-principles framework as an integrating evaluation criterion</h4>
+      <p>Apply a common three-principles lens across development, humanitarian, and foreign policy portfolios. Policies that do not demonstrably strengthen at least one of the three principles should be evaluated for structural alignment.</p>
+    </div>
+  </div>
+  <div class="rec">
+    <div class="rec-num">2</div>
+    <div class="rec-content">
+      <h4>Prioritise prevention over response</h4>
+      <p>The cost advantage of structural prevention over crisis response is estimated at 16:1. Budget frameworks should reflect this ratio.</p>
+    </div>
+  </div>
+
+  <h3>For International Organisations and Development Institutions</h3>
+  <div class="rec">
+    <div class="rec-num">3</div>
+    <div class="rec-content">
+      <h4>Integrate across programmatic silos</h4>
+      <p>Water programmes should be designed with explicit linkages to educational outcomes. Education programmes should incorporate water and sanitation components. Security-adjacent programming should measure and report on water and education indicators as leading indicators of stability.</p>
+    </div>
+  </div>
+  <div class="rec">
+    <div class="rec-num">4</div>
+    <div class="rec-content">
+      <h4>Adopt the three-principles composite score as a supplementary country assessment metric</h4>
+      <p>The composite score — weighted across security, water, and education indices — provides a leading indicator of structural development risk and opportunity that complements existing assessment frameworks.</p>
+    </div>
+  </div>
+
+  <h3>For Impact Investors and ESG Practitioners</h3>
+  <div class="rec">
+    <div class="rec-num">5</div>
+    <div class="rec-content">
+      <h4>Use three-principles scores as a leading indicator of market formation risk and opportunity</h4>
+      <p>Countries with low three-principles scores represent both elevated short-term risk and significant long-term opportunity. The trajectory of scores over time — improving or deteriorating — is a more useful investment signal than absolute score levels.</p>
+    </div>
+  </div>
+  <div class="rec">
+    <div class="rec-num">6</div>
+    <div class="rec-content">
+      <h4>Prioritise blended finance structures in water and education sectors in high-potential, low-score markets</h4>
+      <p>The documented ROI on water and education investment, combined with the market formation potential of high-population, low-score regions, makes blended finance structures in these sectors among the most attractive risk-adjusted opportunities in impact investing.</p>
+    </div>
+  </div>
+
+  <h3>For Civil Society and Media</h3>
+  <div class="rec">
+    <div class="rec-num">7</div>
+    <div class="rec-content">
+      <h4>Advocate for integrated, structural approaches over symptomatic responses</h4>
+      <p>Hold governments and institutions accountable not only to crisis response metrics, but to structural indicators — three-principles scores — that reflect the underlying conditions for sustainable development.</p>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- SECTION 9 -->
+<div class="section">
+  <div class="section-num">Section 9</div>
+  <h2>Data Methodology and Sources</h2>
+
+  <p>The three-principles composite score presented at <strong>three-principles.org</strong> is derived from three established international indices, normalised to a common 0–100 scale and combined using the following weights:</p>
+
+  <table>
+    <tr>
+      <th>Principle</th>
+      <th>Source Index</th>
+      <th>Normalisation</th>
+      <th>Weight</th>
+    </tr>
+    <tr>
+      <td>Security</td>
+      <td>Global Peace Index 2025 (Institute for Economics & Peace)</td>
+      <td>Inverted; 1.0 (most peaceful) → 100; 5.0 (least peaceful) → 0</td>
+      <td>40%</td>
+    </tr>
+    <tr>
+      <td>Water</td>
+      <td>WHO/UNICEF Joint Monitoring Programme 2024</td>
+      <td>Share of population with safely managed drinking water services (0–100%)</td>
+      <td>30%</td>
+    </tr>
+    <tr>
+      <td>Education</td>
+      <td>UNDP Human Development Index 2022 — Education Index</td>
+      <td>Original scale (0.0–1.0) multiplied by 100</td>
+      <td>30%</td>
+    </tr>
+  </table>
+
+  <p>The weighting reflects the assessment that security is the most structurally complex and consequential of the three principles, while water and education carry equal weight as the most tractable and mutually reinforcing interventions. The methodology and underlying data are published in full at three-principles.org and available for independent replication.</p>
+
+  <div class="callout">
+    <div class="callout-label">Limitation</div>
+    All indices used are subject to the methodological limitations of their source organisations, including data availability constraints in fragile and conflict-affected states. Country scores should be interpreted as structural estimates rather than precise measurements. The framework invites critique and methodological refinement from the research community.
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <strong>Three Principles Initiative</strong><br>
+  three-principles.org · @3principles_org<br><br>
+  This document is published under Creative Commons Attribution 4.0 International (CC BY 4.0).
+  It may be reproduced, translated, and adapted with attribution.<br><br>
+  Data sources: Global Peace Index 2025 (Institute for Economics & Peace) ·
+  WHO/UNICEF Joint Monitoring Programme 2024 ·
+  UNDP Human Development Index 2022 ·
+  World Bank · Heckman Equation Project
+</div>
+
+</body>
+</html>
